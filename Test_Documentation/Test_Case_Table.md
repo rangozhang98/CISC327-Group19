@@ -110,3 +110,4 @@
 | Command invalid if the user has not logged in                                                                                                                     | R8.1         | Command invalid if the user has not logged in                                         |
 | Produce output file based on the program output details above.                                                                                                    | R8.2         | Produce output file based on the program output details above.                        |
 ```
+1.	 How we organized the documentation of the test cases is that we created 8 separate branches for each test cases, and we named our 8 markdown files all in the same format. Then we merged branches into the master and putted all into a folder named Test-Documentation in the master branch on our group Github page.
