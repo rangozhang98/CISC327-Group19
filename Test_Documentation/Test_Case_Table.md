@@ -1,4 +1,5 @@
-﻿```markdown
+## Test case documentation
+
 | Specification                                                                                                                                                     | Test Case ID | Purpose                                                                               |
 |-------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------|---------------------------------------------------------------------------------------|
 | If logged in, show the menu item buy, sell, update, and logout. Also, print out the user's balance.                                                               | R1.1         | Test that appropriate commands and balance are printed                                |
@@ -109,7 +110,11 @@
 | Invalidate login user and go back to the landing session/screen                                                                                                   | R7.2         | Invalidate login user and go back to the landing session/screen                       |
 | Command invalid if the user has not logged in                                                                                                                     | R8.1         | Command invalid if the user has not logged in                                         |
 | Produce output file based on the program output details above.                                                                                                    | R8.2         | Produce output file based on the program output details above.                        |
-```
+
+### Requirements problems:
+Two different requirements were labelled as R6, so we decided to change the latter one to R7 and push all subsequent requirement numbers by 1.
+
+### Test plan
 1.	 How we organized the documentation of the test cases is that we created 8 separate branches for each test cases, and we named our 8 markdown files all in the same format. Then we merged branches into the master and putted all markdown files into a folder named Test-Documentation in the master branch on our group Github page.
 2. ---
 3.	What our group going to organize for different cases code files is that we are going to create a code folder following with the case number for each specifications and we build a general folder named CODE in the master branch.    
