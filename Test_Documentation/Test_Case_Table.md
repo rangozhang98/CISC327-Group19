@@ -116,5 +116,5 @@ Two different requirements were labelled as R6, so we decided to change the latt
 
 ### Test plan
 1.	 How we organized the documentation of the test cases is that we created 8 separate branches for each test cases, and we named our 8 markdown files all in the same format. Then we merged branches into the master and putted all markdown files into a folder named Test-Documentation in the master branch on our group Github page.
-2. ---
+2. The framework is a set of rules and guidelines used to test a program. These test documentation specifies the inputs and outputs of our program. This will be very helpful in directly testing from our Github page, since we can automate inputting specified arguments into our program by looking up key sentences used before each Input/Output string. The output can also be compared automatically, because we considered all expected lines the console will print while running a test, as well as file output.
 3.	What our group going to organize for different cases code files is that we are going to create a code folder following with the case number for each specifications and we build a general folder named CODE in the master branch.    
