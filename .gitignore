@@ -103,9 +103,3 @@ venv.bak/
 # mypy
 .mypy_cache/
 .vscode
-.idea
-
-
-archived_logs
-latest_logs
-db.sqlite
