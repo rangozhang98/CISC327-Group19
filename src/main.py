@@ -211,12 +211,20 @@ def sell():
         clear()
         print("---SELL---")
         ticketName = input("Enter the ticket name: ")
-        validName = True
+        validName = False
         # name must be alpha-numeric, not over 60 chars, and can't start/end with a space
-        if len(ticketName) <= 60 and not ticketName.isalnum() and ticketName[0] != ' ' and ticketName[-1] != ' ':
-                for c in ticketName:
-                    if c != ' ':
-                        validName = False
+        if len(ticketName) <= 60 and ticketName.isalnum() and ticketName[0] != ' ' and ticketName[-1] != ' ':
+            validName = True
+            #for c in ticketName:
+                #if c != ' ':
+                    #validName = False
+        elif len(ticketName) <= 60 and not ticketName.isalnum() and ticketName[0] != ' ' and ticketName[-1] != ' ':
+            tempTicket = ""
+            for c in ticketName:
+                if c != ' ':
+                    tempTicket += c
+            if tempTicket.isalnum():
+                validName = True
         else:
             validName = False
         if not validName:
@@ -238,7 +246,19 @@ def sell():
             return
         # date must be in format YYYYMMDD
         ticketDate = input("Enter the ticket date: ")
-        if len(ticketDate) != 8 or int(ticketDate[:4]) < 2020 or int(ticketDate[4:6]) > 12 or int(ticketDate[6:]) > 31:
+        monthsA = [1, 3, 5, 7, 8, 10, 12]
+        monthsB = [4, 6, 9, 11]
+        if ticketDate.isnumeric():
+            if len(ticketDate) != 8 or int(ticketDate[:4]) > 2020 or int(ticketDate[4:6]) > 12 or int(ticketDate[4:6]) < 0:
+                    print("Ticket date is invalid")
+                    landing()
+                    return
+            else:
+                if  int(ticketDate[4:6]) in monthsA and int(ticketDate[6:]) > 31 or int(ticketDate[4:6]) in monthsB and int(ticketDate[6:]) > 30 or int(ticketDate[4:6]) == 2 and int(ticketDate[:4])%4 != 0 and int(ticketDate[6:]) > 28 or int(ticketDate[4:6]) == 2 and int(ticketDate[:4])%4 == 0 and int(ticketDate[6:]) > 29:
+                    print("Ticket date is invalid")
+                    landing()
+                    return
+        else:
             print("Ticket date is invalid")
             landing()
             return
@@ -261,17 +281,27 @@ def buy():
         ticketName = input("Enter the ticket name: ")
         # validate name format
         validTicket = False
-        if (ticketName.isalnum() and ticketName[0] != " " and not ticketName.endswith(" ") and len(ticketName) <= 60):
-            # match name to ticket in file
-            tickets = open(ticketsPath, "r")
-            for line in tickets:
-                values = line.split(',')
-                if values[0] == ticketName:
-                    # get ticket values
-                    validTicket = True
-                    ticketPrice = float(values[1])
-                    availableQuantity = int(values[2])
-                    break
+        if (ticketName[0] != " " and not ticketName.endswith(" ") and len(ticketName) <= 60):
+            if not ticketName.isalnum():
+                tempTicket = ""
+                for c in ticketName:
+                    if c != ' ':
+                        tempTicket += c
+            if ticketName.isalnum() or tempTicket.isalnum():
+                # match name to ticket in file
+                tickets = open(ticketsPath, "r")
+                for line in tickets:
+                    values = line.split(',')
+                    if values[0] == ticketName:
+                        # get ticket values
+                        validTicket = True
+                        ticketPrice = float(values[1])
+                        availableQuantity = int(values[2])
+                        break
+            else:
+                print("Ticket name is invalid")
+                landing()
+                return
             tickets.close()
         if not validTicket:
             print("Ticket name is invalid")
@@ -281,8 +311,10 @@ def buy():
         global userInfo
         ticketQuantity = int(input("Enter the ticket quantity: "))
         # buy quantity can't be greater than what's available and user needs to be able to afford it
-        if (ticketQuantity < 0 or ticketQuantity > availableQuantity or ticketPrice * ticketQuantity * 1.40 >= userInfo["balance"]):
+        if (ticketQuantity < 0 or ticketQuantity > availableQuantity):
             print("Ticket quantity is invalid")
+        elif (ticketPrice * ticketQuantity * 1.40 >= userInfo["balance"]):
+            print("Balance is too low")
         else:
             # update user balance
             userInfo["balance"] -= ticketPrice * ticketQuantity * 1.40
@@ -330,13 +362,19 @@ def update():
         # check if name matches a ticket in file
         tickets = open(ticketsPath, "r")
         validName = False
-        if ticketName.isalnum() and ticketName[0] != ' ' and not ticketName.endswith(' ') and not len(ticketName) > 60:
-            tickets = open(ticketsPath, "r")
-            for line in tickets:
-                values = line.split(',')
-                if values[0] == ticketName:
-                    validName = True
-                    break
+        if ticketName[0] != ' ' and not ticketName.endswith(' ') and not len(ticketName) > 60:
+            tempTicket = ""
+            if not ticketName.isalnum():
+                for c in ticketName:
+                    if c != ' ':
+                        tempTicket += c
+            if ticketName.isalnum() or tempTicket.isalnum():
+                tickets = open(ticketsPath, "r")
+                for line in tickets:
+                    values = line.split(',')
+                    if values[0] == ticketName:
+                        validName = True
+                        break
         if not validName:
             print("Name is invalid")
             landing()
@@ -356,7 +394,19 @@ def update():
             return
         # date must be in format YYYYMMDD
         ticketDate = input("Enter the ticket date: ")
-        if len(ticketDate) != 8  or int(ticketDate[:4]) < 2020 or int(ticketDate[4:6]) > 12 or int(ticketDate[6:]) > 31:
+        monthsA = [1, 3, 5, 7, 8, 10, 12]
+        monthsB = [4, 6, 9, 11]
+        if ticketDate.isnumeric():
+            if len(ticketDate) != 8 or int(ticketDate[:4]) > 2020 or int(ticketDate[4:6]) > 12 or int(ticketDate[4:6]) < 0:
+                    print("Date is invalid")
+                    landing()
+                    return
+            else:
+                if  int(ticketDate[4:6]) in monthsA and int(ticketDate[6:]) > 31 or int(ticketDate[4:6]) in monthsB and int(ticketDate[6:]) > 30 or int(ticketDate[4:6]) == 2 and int(ticketDate[:4])%4 != 0 and int(ticketDate[6:]) > 28 or int(ticketDate[4:6]) == 2 and int(ticketDate[:4])%4 == 0 and int(ticketDate[6:]) > 29:
+                    print("Date is invalid")
+                    landing()
+                    return
+        else:
             print("Date is invalid")
             landing()
             return
