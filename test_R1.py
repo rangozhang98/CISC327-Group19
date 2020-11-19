@@ -225,6 +225,45 @@ def test_r1_5(capsys):
         ]
     )
 
+#test that command invalid when user is logged in
+def test_r2_1(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            "login",
+            'aaa@gmail.com',
+            'aaa45',
+            'login',
+            'logout',
+            'exit'
+        ],
+        intput_valid_accounts=[],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            '---LOG IN---',
+            'Enter your email: Enter your password: Account logged in',
+            '---Your balance: $415.03---',
+            'buy',
+            'sell',
+            'update',
+            'logout',
+            'Command invalid',
+            '---Your balance: $415.03---',
+            'buy',
+            'sell',
+            'update',
+            'logout',
+            'Logout successful',
+            'login',
+            'register',
+            'exit',
+            'Exiting program'
+        ],
+        expected_output_transactions=[]
+    )
+
 def helper(
         capsys,
         terminal_input,
@@ -277,10 +316,33 @@ def helper(
     # print out the testing information for debugging
     # the following print content will only display if a 
     # test case failed:
-    print('std.in:', terminal_input)
-    print('valid accounts:', intput_valid_accounts)
-    print('terminal output:', out_lines)
-    print('terminal output (expected tail):', expected_tail_of_terminal_output)
+    print()
+    print('STD.IN:', terminal_input)
+    print('VALID ACCOUNTS:', intput_valid_accounts)
+    print()
+    # formatted output comparison
+    outLen = len(out_lines)
+    expLen = len(expected_tail_of_terminal_output)
+    endInd = outLen-expLen
+    formatStr = '\033[91m'+'{:<1s}'+'\x1b[0m'+'{:<35.34s}{:<35.35s}'
+    print(formatStr.format('', 'EXPECTED:', 'STD.OUT:'))
+    print('===============================================')
+    if (endInd > 0):
+        for i in range(expLen):
+            print(formatStr.format('' if expected_tail_of_terminal_output[i] == out_lines[i] else '*', expected_tail_of_terminal_output[i], out_lines[i]))
+        for o in range(expLen, outLen):
+            print(formatStr.format('', '', out_lines[o]))
+    elif (endInd < 0):
+        for i in range(outLen):
+            print(formatStr.format('' if expected_tail_of_terminal_output[i] == out_lines[i] else '*', expected_tail_of_terminal_output[i], out_lines[i]))
+        for e in range(outLen, expLan):
+            print(formatStr.format('', expected_tail_of_terminal_output[i], ''))
+    else:
+        for i in range(outLen):
+            print(formatStr.format('' if expected_tail_of_terminal_output[i] == out_lines[i] else '*', expected_tail_of_terminal_output[i], out_lines[i]))
+    
+    # print('terminal output:', out_lines)
+    # print('terminal output (expected tail):', expected_tail_of_terminal_output)
 
     # compare terminal outputs at the end.`
     for i in range(1, len(expected_tail_of_terminal_output)+1):
