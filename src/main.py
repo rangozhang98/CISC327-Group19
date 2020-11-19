@@ -12,36 +12,33 @@ loggedIn = False
 # user's account details
 userInfo = {"username": "", "balance": -1, "email": ""}
 # office location, used in transaction file's name
-location = ""
+location = "kingston"
 # string that collects transactions to write to file when user exits
 runningTransactions = ""
 # paths of account and ticket list files used for this program
-accountsPath = ""
-ticketsPath = ""
+accountsPath = "src/accounts.csv"
+ticketsPath = "src/tickets.csv"
 
 
 # main method, program must be run with args (location, accountsPath, ticketsPath) in command line
 def main():
-    try:
         # set up global vars for office location and file paths
         global location, accountsPath, ticketsPath
-        location = argv[1]
-        accountsPath = argv[2]
-        ticketsPath = argv[3]
+
+        #hardcoded the location and file paths
+
         # go to landing page
         landing()
-    except:
-        # instruct user how to run the program if arguments are wrong
-        print("\nProgram needs arguments: {location} {accountsPath} {ticketsPath}\n")
+
 
 # method controls the landing page
 def landing():
-    sleep(1.5)
+    #sleep(1.5)
     clear()
     if loggedIn:
         global userInfo
         # print menu screen
-        print("---Your balance: $%.2f---\n\nbuy\nsell\nupdate\nlogout\n" % userInfo["balance"])
+        print("---Your balance: $%.2f---\nbuy\nsell\nupdate\nlogout" % userInfo["balance"])
         # call methods according to user's input command
         menuSelection = input()
         if menuSelection == "buy":
@@ -57,7 +54,7 @@ def landing():
             landing()
     else:
         # print menu screen
-        print("login\nregister\nexit\n")
+        print("login\nregister\nexit")
         menuSelection = input()
         if menuSelection == "login":
             login()
@@ -77,7 +74,7 @@ def register():
         return
     clear()
 
-    print("---REGISTER---\n")
+    print("---REGISTER---")
     email = input("Enter an email: ")
     validEmail = True
     try:
@@ -178,7 +175,7 @@ def login():
     global loggedIn
     if not loggedIn:
         clear()
-        print("---LOG IN---\n")
+        print("---LOG IN---")
         email = input("Enter your email: ")
         # for every account in the file, check for matching email
         file = open(accountsPath, "r")
@@ -208,12 +205,11 @@ def login():
 def sell():
     if loggedIn:
         clear()
-        print("---SELL---\n")
+        print("---SELL---")
         ticketName = input("Enter the ticket name: ")
         validName = True
         # name must be alpha-numeric, not over 60 chars, and can't start/end with a space
-        if len(ticketName) <= 60:
-            if not ticketName.isalnum() and ticketName[0] != ' ' and ticketName[-1] != ' ':
+        if len(ticketName) <= 60 and not ticketName.isalnum() and ticketName[0] != ' ' and ticketName[-1] != ' ':
                 for c in ticketName:
                     if c != ' ':
                         validName = False
@@ -255,7 +251,7 @@ def sell():
 def buy():
     if loggedIn:
         clear()
-        print("---BUY---\n")
+        print("---BUY---")
         availableQuantity = -1
         ticketPrice = -1
         ticketName = input("Enter the ticket name: ")
@@ -324,7 +320,7 @@ def buy():
 def update():
     if loggedIn:
         clear()
-        print("---UPDATE---\n")
+        print("---UPDATE---")
         ticketName = input("Enter the ticket name: ")
 
         # check if name matches a ticket in file
@@ -409,7 +405,7 @@ def exit():
         transactions.write(runningTransactions)
         transactions.close()
         print("Exiting program")
-        sleep(1.5)
+        #sleep(1.5)
         clear()
     else:
         print("Command invalid")
