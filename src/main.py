@@ -1,5 +1,5 @@
-# get command line arguments
-from sys import argv
+# to get command line arguments
+import sys
 # sleep function to pause before changing the console text
 from time import sleep
 # function clears the console using the appropriate OS's keywords
@@ -22,13 +22,17 @@ ticketsPath = "src/tickets.csv"
 
 # main method, program must be run with args (location, accountsPath, ticketsPath) in command line
 def main():
+    try:
         # set up global vars for office location and file paths
         global location, accountsPath, ticketsPath
-
-        #hardcoded the location and file paths
-
+        location = sys.argv[1]
+        accountsPath = sys.argv[2]
+        ticketsPath = sys.argv[3]
         # go to landing page
         landing()
+    except:
+        # instruct user how to run the program if arguments are wrong
+        print("\nProgram needs arguments: {location} {accountsPath} {ticketsPath}\n")
 
 
 # method controls the landing page

@@ -9,12 +9,6 @@ path = os.path.dirname(os.path.abspath(__file__))
 
 #tests all of R1.1 by checking if the output is correct for when logged in
 def test_r1_1(capsys):
-    """Testing r2. Self-contained (i.e. everything in the code approach)
-    [my favorite - all in one place with the code]
-
-    Arguments:
-        capsys -- object created by pytest to capture stdout and stderr
-    """
     helper(
         capsys=capsys,
         terminal_input=[
@@ -24,8 +18,8 @@ def test_r1_1(capsys):
             'logout',
             'exit'
         ],
-        intput_valid_accounts=[
-        ],
+        input_valid_accounts=['aaa@gmail.com,aaa,aaa45,415.03'],
+        input_valid_tickets=[],
         expected_tail_of_terminal_output=[
             "login",
             "register",
@@ -49,19 +43,13 @@ def test_r1_1(capsys):
 
 #tests all of R1.2 by checking if the output is correct for when not logged in
 def test_r1_2(capsys):
-    """Testing r2. Self-contained (i.e. everything in the code approach)
-    [my favorite - all in one place with the code]
-
-    Arguments:
-        capsys -- object created by pytest to capture stdout and stderr
-    """
     helper(
         capsys=capsys,
         terminal_input=[
             'exit'
         ],
-        intput_valid_accounts=[
-        ],
+        input_valid_accounts=[],
+        input_valid_tickets=[],
         expected_tail_of_terminal_output=[
             "login",
             "register",
@@ -74,12 +62,6 @@ def test_r1_2(capsys):
 
 #goes to all pages fails something to get sent back to landing and then goes to another
 def test_r1_3(capsys):
-    """Testing r2. Self-contained (i.e. everything in the code approach)
-    [my favorite - all in one place with the code]
-
-    Arguments:
-        capsys -- object created by pytest to capture stdout and stderr
-    """
     helper(
         capsys=capsys,
         terminal_input=[
@@ -96,10 +78,9 @@ def test_r1_3(capsys):
             '%',
             'logout',
             'exit'
-
         ],
-        intput_valid_accounts=[
-        ],
+        input_valid_accounts=['aaa@gmail.com,aaa,aaa45,415.03'],
+        input_valid_tickets=[],
         expected_tail_of_terminal_output=[
             "login",
             "register",
@@ -150,20 +131,14 @@ def test_r1_3(capsys):
 
 #tests when an invalid input is sent when not logged in
 def test_r1_4(capsys):
-    """Testing r2. Self-contained (i.e. everything in the code approach)
-    [my favorite - all in one place with the code]
-
-    Arguments:
-        capsys -- object created by pytest to capture stdout and stderr
-    """
     helper(
         capsys=capsys,
         terminal_input=[
             'a',
             'exit'
         ],
-        intput_valid_accounts=[
-        ],
+        input_valid_accounts=[],
+        input_valid_tickets=[],
         expected_tail_of_terminal_output=[
             "login",
             "register",
@@ -180,12 +155,6 @@ def test_r1_4(capsys):
 
 #tests when in invalid input is sent on the login screen
 def test_r1_5(capsys):
-    """Testing r2. Self-contained (i.e. everything in the code approach)
-    [my favorite - all in one place with the code]
-
-    Arguments:
-        capsys -- object created by pytest to capture stdout and stderr
-    """
     helper(
         capsys=capsys,
         terminal_input=[
@@ -196,8 +165,8 @@ def test_r1_5(capsys):
             'logout',
             'exit'
         ],
-        intput_valid_accounts=[
-        ],
+        input_valid_accounts=['aaa@gmail.com,aaa,aaa45,415.03'],
+        input_valid_tickets=[],
         expected_tail_of_terminal_output=[
             "login",
             "register",
@@ -233,11 +202,12 @@ def test_r2_1(capsys):
             "login",
             'aaa@gmail.com',
             'aaa45',
-            'login',
+            'register',
             'logout',
             'exit'
         ],
-        intput_valid_accounts=[],
+        input_valid_accounts=['aaa@gmail.com,aaa,aaa45,415.03'],
+        input_valid_tickets=[],
         expected_tail_of_terminal_output=[
             "login",
             "register",
@@ -264,11 +234,65 @@ def test_r2_1(capsys):
         expected_output_transactions=[]
     )
 
+# start registration if command is valid
+def test_r2_2(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            'register',
+            ' ',
+            'exit'
+        ],
+        input_valid_accounts=[],
+        input_valid_tickets=[],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            '---REGISTER---',
+            'Enter an email: Email format is incorrect',
+            'login',
+            'register',
+            'exit',
+            'Exiting program'
+        ],
+        expected_output_transactions=[]
+    )
+
+# should ask for email, user name, password, password2
+def test_r2_3(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            'register',
+            'zzz@gmail.com',
+            'zzzzz',
+            'Zz.45',
+            'Zz.45',
+            'exit'
+        ],
+        input_valid_accounts=['aaa@gmail.com,aaa,aaa45,415.03'],
+        input_valid_tickets=[],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            '---REGISTER---',
+            'Enter an email: Enter a username: Enter a password: Confirm your password: Account registered',
+            'login',
+            'register',
+            'exit',
+            'Exiting program'
+        ],
+        expected_output_transactions=[]
+    )
+
 def helper(
         capsys,
         terminal_input,
+        input_valid_accounts,
+        input_valid_tickets,
         expected_tail_of_terminal_output,
-        intput_valid_accounts,
         expected_output_transactions
 ):
     """Helper function for testing
@@ -277,7 +301,7 @@ def helper(
         capsys -- object created by pytest to capture stdout and stderr
         terminal_input -- list of string for terminal input
         expected_tail_of_terminal_output list of expected string at the tail of terminal
-        intput_valid_accounts -- list of valid accounts in the valid_account_list_file
+        input_valid_accounts -- list of valid accounts in the valid_account_list_file
         expected_output_transactions -- list of expected output transactions
     """
 
@@ -292,11 +316,20 @@ def helper(
     temp_fd2, temp_file2 = tempfile.mkstemp()
     valid_account_list_file = temp_file2
     with open(valid_account_list_file, 'w') as wf:
-        wf.write('\n'.join(intput_valid_accounts))
+        wf.write('\n'.join(input_valid_accounts))
+
+    # temp file to store ticket list
+    temp_fd3, temp_file3 = tempfile.mkstemp()
+    valid_ticket_list_file = temp_file3
+    with open(valid_ticket_list_file, 'w') as wf:
+        wf.write('\n'.join(input_valid_tickets))
 
     # prepare program parameters
     sys.argv = [
         'main.py',
+        'testCity',
+        valid_account_list_file,
+        valid_ticket_list_file
     ]
 
     # set terminal input
@@ -318,13 +351,19 @@ def helper(
     # test case failed:
     print()
     print('STD.IN:', terminal_input)
-    print('VALID ACCOUNTS:', intput_valid_accounts)
+    print('VALID ACCOUNTS:', input_valid_accounts)
+    print('VALID TICKETS: ', input_valid_tickets)
     print()
     # formatted output comparison
     outLen = len(out_lines)
     expLen = len(expected_tail_of_terminal_output)
     endInd = outLen-expLen
-    formatStr = '\033[91m'+'{:<1s}'+'\x1b[0m'+'{:<35.34s}{:<35.35s}'
+    formatShort = '\033[91m'+'{:<1s}'+'\x1b[0m'+'{:<35.34s}{:<35.35s}'
+    formatLong = '\033[91m'+'{:<1s}'+'\x1b[0m'+'{:<80.79s}{:<80}'
+    
+    #-------- CHANGE FormatShort to FormatLong if outputs are cut off. Widen the console.
+    formatStr = formatShort
+    #------------------------
     print(formatStr.format('', 'EXPECTED:', 'STD.OUT:'))
     print('===============================================')
     if (endInd > 0):
@@ -365,3 +404,5 @@ def helper(
     # clean up
     os.close(temp_fd)
     os.remove(temp_file)
+    # remove transaction file
+    os.remove(sys.argv[1]+'_transactions.csv')
