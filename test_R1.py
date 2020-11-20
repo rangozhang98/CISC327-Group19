@@ -37,8 +37,8 @@ def test_r1_1(capsys):
             "exit",
             'Exiting program'
         ],
-        expected_output_transactions=[
-        ]
+        test_transactions=False,
+        expected_output_transactions=[]
     )
 
 #tests all of R1.2 by checking if the output is correct for when not logged in
@@ -56,8 +56,8 @@ def test_r1_2(capsys):
             "exit",
             'Exiting program'
         ],
-        expected_output_transactions=[
-        ]
+        test_transactions=False,
+        expected_output_transactions=[]
     )
 
 #goes to all pages fails something to get sent back to landing and then goes to another
@@ -125,8 +125,8 @@ def test_r1_3(capsys):
             "exit",
             'Exiting program'
         ],
-        expected_output_transactions=[
-        ]
+        test_transactions=False,
+        expected_output_transactions=[]
     )
 
 #tests when an invalid input is sent when not logged in
@@ -149,8 +149,8 @@ def test_r1_4(capsys):
             "exit",
             'Exiting program'
         ],
-        expected_output_transactions=[
-        ]
+        test_transactions=False,
+        expected_output_transactions=[]
     )
 
 #tests when in invalid input is sent on the login screen
@@ -190,100 +190,7 @@ def test_r1_5(capsys):
             "exit",
             'Exiting program'
         ],
-        expected_output_transactions=[
-        ]
-    )
-
-#test that command invalid when user is logged in
-def test_r2_1(capsys):
-    helper(
-        capsys=capsys,
-        terminal_input=[
-            "login",
-            'aaa@gmail.com',
-            'aaa45',
-            'register',
-            'logout',
-            'exit'
-        ],
-        input_valid_accounts=['aaa@gmail.com,aaa,aaa45,415.03'],
-        input_valid_tickets=[],
-        expected_tail_of_terminal_output=[
-            "login",
-            "register",
-            "exit",
-            '---LOG IN---',
-            'Enter your email: Enter your password: Account logged in',
-            '---Your balance: $415.03---',
-            'buy',
-            'sell',
-            'update',
-            'logout',
-            'Command invalid',
-            '---Your balance: $415.03---',
-            'buy',
-            'sell',
-            'update',
-            'logout',
-            'Logout successful',
-            'login',
-            'register',
-            'exit',
-            'Exiting program'
-        ],
-        expected_output_transactions=[]
-    )
-
-# start registration if command is valid
-def test_r2_2(capsys):
-    helper(
-        capsys=capsys,
-        terminal_input=[
-            'register',
-            ' ',
-            'exit'
-        ],
-        input_valid_accounts=[],
-        input_valid_tickets=[],
-        expected_tail_of_terminal_output=[
-            "login",
-            "register",
-            "exit",
-            '---REGISTER---',
-            'Enter an email: Email format is incorrect',
-            'login',
-            'register',
-            'exit',
-            'Exiting program'
-        ],
-        expected_output_transactions=[]
-    )
-
-# should ask for email, user name, password, password2
-def test_r2_3(capsys):
-    helper(
-        capsys=capsys,
-        terminal_input=[
-            'register',
-            'zzz@gmail.com',
-            'zzzzz',
-            'Zz.45',
-            'Zz.45',
-            'exit'
-        ],
-        input_valid_accounts=['aaa@gmail.com,aaa,aaa45,415.03'],
-        input_valid_tickets=[],
-        expected_tail_of_terminal_output=[
-            "login",
-            "register",
-            "exit",
-            '---REGISTER---',
-            'Enter an email: Enter a username: Enter a password: Confirm your password: Account registered',
-            'login',
-            'register',
-            'exit',
-            'Exiting program'
-        ],
+        test_transactions=False,
         expected_output_transactions=[]
     )
 
@@ -293,6 +200,7 @@ def helper(
         input_valid_accounts,
         input_valid_tickets,
         expected_tail_of_terminal_output,
+        test_transactions,
         expected_output_transactions
 ):
     """Helper function for testing
@@ -310,7 +218,6 @@ def helper(
 
     # create a temporary file in the system to store output transactions
     temp_fd, temp_file = tempfile.mkstemp()
-    transaction_summary_file = temp_file
 
     # create a temporary file in the system to store the valid accounts:
     temp_fd2, temp_file2 = tempfile.mkstemp()
@@ -352,17 +259,18 @@ def helper(
         assert expected_tail_of_terminal_output[index] == out_lines[index]
     
     # compare transactions:
-    with open(transaction_summary_file, 'r') as of:
-        content = of.read().splitlines()
-        
-        # print out the testing information for debugging
-        # the following print content will only display if a 
-        # test case failed:
-        print('output transactions:', content)
-        print('output transactions (expected):', expected_output_transactions)
-        
-        for ind in range(len(content)):
-            assert content[ind] == expected_output_transactions[ind]
+    if test_transactions:
+        with open(sys.argv[1]+'_transactions.csv', 'r') as of:
+            content = of.read().splitlines()
+            
+            # print out the testing information for debugging
+            # the following print content will only display if a 
+            # test case failed:
+            print('output transactions:', content)
+            print('output transactions (expected):', expected_output_transactions)
+            
+            for ind in range(len(content)):
+                assert content[ind] == expected_output_transactions[ind]
 
     # clean up
     os.close(temp_fd)
