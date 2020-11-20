@@ -32,7 +32,7 @@ def main():
         landing()
     except:
         # instruct user how to run the program if arguments are wrong
-        print("\nProgram needs arguments: {location} {accountsPath} {ticketsPath}\n")
+        print("Program needs arguments: {location} {accountsPath} {ticketsPath}")
 
 
 # method controls the landing page
