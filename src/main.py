@@ -12,7 +12,7 @@ loggedIn = False
 # user's account details
 userInfo = {"username": "", "balance": -1, "email": ""}
 # office location, used in transaction file's name
-location = "kingston"
+location = ""
 # string that collects transactions to write to file when user exits
 runningTransactions = ""
 # paths of account and ticket list files used for this program
