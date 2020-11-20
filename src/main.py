@@ -16,8 +16,8 @@ location = "kingston"
 # string that collects transactions to write to file when user exits
 runningTransactions = ""
 # paths of account and ticket list files used for this program
-accountsPath = "src/accounts.csv"
-ticketsPath = "src/tickets.csv"
+accountsPath = ""
+ticketsPath = ""
 
 
 # main method, program must be run with args (location, accountsPath, ticketsPath) in command line
@@ -101,7 +101,7 @@ def register():
             for i in range(len(domain)):
                 c = domain[i]
                 # invalid if char is a consecutive period or isn't alpha-numeric
-                if not c.isalnum() and not (c == '.' and domain[i-1] != '.' and domain[i+1] != '.'):
+                if not c.isalnum() and not c == '.' and not c == '-':
                     validEmail = False
                     break
         else:
@@ -129,8 +129,15 @@ def register():
         return
         
     username = input("Enter a username: ")
+    userValid = True
     # username is limited to 2-20 chars, alphanumeric, and doesn't start/end with a space
-    if len(username) <= 2 or len(username) >= 20 or not username.isalnum() or username[0] == ' ' or username[-1] == ' ':
+    if len(username) > 2 and len(username) < 20 and username[0] != ' ' and username[-1] != ' ':
+        for c in username:
+            if not c.isalnum() and c != ' ':
+                userValid = False
+    else:
+        userValid = False
+    if not userValid:
         print("Username format is incorrect")
         landing()
         return

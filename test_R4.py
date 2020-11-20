@@ -28,8 +28,7 @@ def test_r4_1(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #tests all of R4.2 by checking if the output is correct when a session starts after a proper login and sell option
@@ -72,8 +71,7 @@ def test_r4_2(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #tests all of R4.3 by checking if the output is correct and proper fields are being requested
@@ -118,8 +116,7 @@ def test_r4_3(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #tests all of R4.4 by checking if the output is correct when valid and invalid ticket names are provided
@@ -210,8 +207,7 @@ def test_r4_4(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #tests all of R4.3 by checking if the output is correct when passed a ticketname of len > 60
@@ -265,8 +261,7 @@ def test_r4_5(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #tests all of R4.6 by checking if the output is correct when passed invalid quantity numbers
@@ -357,8 +352,7 @@ def test_r4_6(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #tests all of R4.7 by checking if the output is correct when passed prices out of the range
@@ -455,8 +449,7 @@ def test_r4_7(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #tests all of R4.8 by checking if the output is correct when passed a combination of valid and invalid dates
@@ -608,8 +601,7 @@ def test_r4_8(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 def helper(
@@ -674,7 +666,12 @@ def helper(
     # print out the testing information for debugging
     # the following print content will only display if a 
     # test case failed:
-
+    print('std.in:', terminal_input)
+    print('valid accounts:', input_valid_accounts)
+    print('valid tickets:', input_valid_tickets)
+    print('terminal output:', out_lines)
+    print('terminal output (expected tail):', expected_tail_of_terminal_output)
+    
     # compare terminal outputs at the end.`
     for i in range(1, len(expected_tail_of_terminal_output)+1):
         index = i * -1

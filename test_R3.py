@@ -45,8 +45,7 @@ def test_r3_1(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #R3.2 was tested in the landing tests in R1.3 where we tested if landing could send to every session
@@ -83,8 +82,7 @@ def test_r3_3(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #Tests R3.4 which tests if the password or email is invalid and says that and doesnt allow them to login
@@ -120,8 +118,7 @@ def test_r3_4(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #R3.4 format checking of the email and password is done in the registration and doesnt allow incorrect 
@@ -160,8 +157,7 @@ def test_r3_6(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #R3.7 tests if the login fails but this is already achieved in the test R3.4 where invalid emails and
@@ -227,6 +223,15 @@ def helper(
     # split terminal output in lines
     out_lines = out.splitlines()
 
+    # print out the testing information for debugging
+    # the following print content will only display if a 
+    # test case failed:
+    print('std.in:', terminal_input)
+    print('valid accounts:', input_valid_accounts)
+    print('valid tickets:', input_valid_tickets)
+    print('terminal output:', out_lines)
+    print('terminal output (expected tail):', expected_tail_of_terminal_output)
+    
     # compare terminal outputs at the end.`
     for i in range(1, len(expected_tail_of_terminal_output)+1):
         index = i * -1
