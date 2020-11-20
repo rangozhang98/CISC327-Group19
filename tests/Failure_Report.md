@@ -21,3 +21,9 @@ sys.argv = [
 
 We also added a transaction array into our helper arguments, which 
 are compared with the file created in the program.
+
+## Failure Report
+| Test Name | Purpose | Output error | Source code error | Changes made |
+|-----------|---------|--------------|-------------------|--------------|
+| R2_8_5 | Username can have spaces if they're not at the start/end | 'A Aa' not accepted | username rejected if it's not alphanumeric | code checks chars in username and accepts inside spaces|
+| Ur test | Ur purpose | ur output err | ur code err| ur changes |
