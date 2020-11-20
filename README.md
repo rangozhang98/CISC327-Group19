@@ -1,6 +1,6 @@
 # CI-Python
 
-[![Python application](https://github.com/rangozhang98/CISC327-Group19/workflows/Python%20application/badge.svg)]()
+![Python application](https://github.com/rangozhang98/CISC327-Group19/workflows/Python%20application/badge.svg)
 
 ### Python CI template for GitHub Actions
 
