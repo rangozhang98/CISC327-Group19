@@ -28,8 +28,7 @@ def test_r6_1(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #tests all of R4.2 by checking if the output is correct when a session starts after a proper login and update option
@@ -72,8 +71,7 @@ def test_r6_2(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #tests all of R4.3 by checking if the output is correct and proper fields are being requested
@@ -118,8 +116,7 @@ def test_r6_3(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #tests all of R4.4 by checking if the output is correct when valid and invalid ticket names are provided
@@ -210,8 +207,7 @@ def test_r6_4(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #tests all of R4.3 by checking if the output is correct when passed a ticketname of len > 60
@@ -265,8 +261,7 @@ def test_r6_5(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #tests all of R4.6 by checking if the output is correct when passed invalid quantity numbers
@@ -357,8 +352,7 @@ def test_r6_6(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #tests all of R4.7 by checking if the output is correct when passed prices out of the range
@@ -455,8 +449,7 @@ def test_r6_7(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #tests all of R6.8 by checking if the output is correct when passed a combination of valid and invalid dates
@@ -608,8 +601,7 @@ def test_r6_8(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #tests all of R6.9 by checking if the output is correct when written to a file
@@ -653,10 +645,8 @@ def test_r6_9(capsys):
             "exit",
             'Exiting program'
         ],
-        test_transactions=False,
-        expected_output_transactions=[
-            'update,aaa,ticket1,10.00,5'
-        ]
+        test_transactions=True,
+        expected_output_transactions=['update,aaa,ticket1,10.00,5']
     )
 
 def helper(

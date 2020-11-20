@@ -28,8 +28,7 @@ def test_r7_1(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #Tests R7.2 by logging in then checking if the logout command works and logs the user out, and then
@@ -64,8 +63,7 @@ def test_r7_2(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 def helper(

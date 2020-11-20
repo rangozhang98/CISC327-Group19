@@ -28,8 +28,7 @@ def test_r5_1(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #tests all of R5.2 by checking if the output is correct when a session starts after a proper login and buy option
@@ -72,8 +71,7 @@ def test_r5_2(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #tests all of R5.3 by checking if the output is correct and proper fields are being requested
@@ -116,8 +114,7 @@ def test_r5_3(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #tests all of R5.4 by checking if the output is correct when valid and invalid ticket names are provided
@@ -206,8 +203,7 @@ def test_r5_4(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #tests all of R5.3 by checking if the output is correct when passed a ticketname of len > 60
@@ -259,8 +255,7 @@ def test_r5_5(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #tests all of R4.6 by checking if the output is correct when passed invalid quantity numbers
@@ -351,8 +346,7 @@ def test_r5_6(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #tests all of R4.7 by checking if the output is correct if the users balance is not large enough
@@ -405,8 +399,7 @@ def test_r5_7(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #tests all of R5.8 by checking if the output is written to the file
@@ -448,10 +441,8 @@ def test_r5_8(capsys):
             "exit",
             'Exiting program'
         ],
-        test_transactions=False,
-        expected_output_transactions=[
-            'buy,aaa,ticket1,10.00,10'
-        ]
+        test_transactions=True,
+        expected_output_transactions=['buy,aaa,ticket1,10.00,10']
     )
 
 def helper(

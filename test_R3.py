@@ -45,8 +45,7 @@ def test_r3_1(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #R3.2 was tested in the landing tests in R1.3 where we tested if landing could send to every session
@@ -83,8 +82,7 @@ def test_r3_3(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #Tests R3.4 which tests if the password or email is invalid and says that and doesnt allow them to login
@@ -120,8 +118,7 @@ def test_r3_4(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #R3.4 format checking of the email and password is done in the registration and doesnt allow incorrect 
@@ -160,8 +157,7 @@ def test_r3_6(capsys):
             'Exiting program'
         ],
         test_transactions=False,
-        expected_output_transactions=[
-        ]
+        expected_output_transactions=[]
     )
 
 #R3.7 tests if the login fails but this is already achieved in the test R3.4 where invalid emails and

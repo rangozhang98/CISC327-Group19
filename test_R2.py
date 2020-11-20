@@ -739,13 +739,15 @@ def test_r2_5_15(capsys):
         expected_output_transactions=[]
     )
 
-# local part can't be blank
-def test_r2_5_15(capsys):
+# password can't be under 6 chars
+def test_r2_6_1(capsys):
     helper(
         capsys=capsys,
         terminal_input=[
             'register',
-            '@gmail.com',
+            'aaa@gmail.com',
+            'aaaaa',
+            'Aa.4',
             'exit'
         ],
         input_valid_accounts=[],
@@ -755,7 +757,7 @@ def test_r2_5_15(capsys):
             "register",
             "exit",
             '---REGISTER---',
-            'Enter an email: Email format is incorrect',
+            'Enter an email: Enter a username: Enter a password: Password format is incorrect',
             'login',
             'register',
             'exit',
@@ -765,6 +767,436 @@ def test_r2_5_15(capsys):
         expected_output_transactions=[]
     )
 
+# password must have at least one uppercase, lowercase, and special char from !#$%&'*+-/=?^_`{|}~
+def test_r2_6_2(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            'register',
+            'aaa@gmail.com',
+            'aaaaa',
+            'aa.45',
+            'exit'
+        ],
+        input_valid_accounts=[],
+        input_valid_tickets=[],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            '---REGISTER---',
+            'Enter an email: Enter a username: Enter a password: Password format is incorrect',
+            'login',
+            'register',
+            'exit',
+            'Exiting program'
+        ],
+        test_transactions=False,
+        expected_output_transactions=[]
+    )
+
+# password must have at least one uppercase, lowercase, and special char from !#$%&'*+-/=?^_`{|}~
+def test_r2_6_3(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            'register',
+            'aaa@gmail.com',
+            'aaaaa',
+            'AA.45',
+            'exit'
+        ],
+        input_valid_accounts=[],
+        input_valid_tickets=[],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            '---REGISTER---',
+            'Enter an email: Enter a username: Enter a password: Password format is incorrect',
+            'login',
+            'register',
+            'exit',
+            'Exiting program'
+        ],
+        test_transactions=False,
+        expected_output_transactions=[]
+    )
+
+# password must have at least one uppercase, lowercase, and special char from !#$%&'*+-/=?^_`{|}~
+def test_r2_6_4(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            'register',
+            'aaa@gmail.com',
+            'aaaaa',
+            'Aaa45',
+            'exit'
+        ],
+        input_valid_accounts=[],
+        input_valid_tickets=[],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            '---REGISTER---',
+            'Enter an email: Enter a username: Enter a password: Password format is incorrect',
+            'login',
+            'register',
+            'exit',
+            'Exiting program'
+        ],
+        test_transactions=False,
+        expected_output_transactions=[]
+    )
+
+# passwords can't be different
+def test_r2_7(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            'register',
+            'aaa@gmail.com',
+            'aaaaa',
+            'Aa.45',
+            'aa.45',
+            'exit'
+        ],
+        input_valid_accounts=[],
+        input_valid_tickets=[],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            '---REGISTER---',
+            'Enter an email: Enter a username: Enter a password: Confirm your password: Passwords do not match',
+            'login',
+            'register',
+            'exit',
+            'Exiting program'
+        ],
+        test_transactions=False,
+        expected_output_transactions=[]
+    )
+
+# username can't be empty
+def test_r2_8_1(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            'register',
+            'aaa@gmail.com',
+            '',
+            'exit'
+        ],
+        input_valid_accounts=[],
+        input_valid_tickets=[],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            '---REGISTER---',
+            'Enter an email: Enter a username: Username format is incorrect',
+            'login',
+            'register',
+            'exit',
+            'Exiting program'
+        ],
+        test_transactions=False,
+        expected_output_transactions=[]
+    )
+
+# Username can't have non-alphanumeric non-space chars
+def test_r2_8_2(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            'register',
+            'aaa@gmail.com',
+            'aaaa!',
+            'exit'
+        ],
+        input_valid_accounts=[],
+        input_valid_tickets=[],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            '---REGISTER---',
+            'Enter an email: Enter a username: Username format is incorrect',
+            'login',
+            'register',
+            'exit',
+            'Exiting program'
+        ],
+        test_transactions=False,
+        expected_output_transactions=[]
+    )
+
+# Username can't start/end with space
+def test_r2_8_3(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            'register',
+            'aaa@gmail.com',
+            ' aaa',
+            'exit'
+        ],
+        input_valid_accounts=[],
+        input_valid_tickets=[],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            '---REGISTER---',
+            'Enter an email: Enter a username: Username format is incorrect',
+            'login',
+            'register',
+            'exit',
+            'Exiting program'
+        ],
+        test_transactions=False,
+        expected_output_transactions=[]
+    )
+
+# Username can't start/end with space
+def test_r2_8_4(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            'register',
+            'aaa@gmail.com',
+            'aaa ',
+            'exit'
+        ],
+        input_valid_accounts=[],
+        input_valid_tickets=[],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            '---REGISTER---',
+            'Enter an email: Enter a username: Username format is incorrect',
+            'login',
+            'register',
+            'exit',
+            'Exiting program'
+        ],
+        test_transactions=False,
+        expected_output_transactions=[]
+    )
+
+# Username can have space inside it, not at start/end
+def test_r2_8_5(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            'register',
+            'aaa@gmail.com',
+            'A Aa',
+            '',
+            'exit'
+        ],
+        input_valid_accounts=[],
+        input_valid_tickets=[],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            '---REGISTER---',
+            'Enter an email: Enter a username: Enter a password: Password format is incorrect',
+            'login',
+            'register',
+            'exit',
+            'Exiting program'
+        ],
+        test_transactions=False,
+        expected_output_transactions=[]
+    )
+
+# Username must be longer than 2 chars
+def test_r2_9_1(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            'register',
+            'aaa@gmail.com',
+            'aa',
+            'exit'
+        ],
+        input_valid_accounts=[],
+        input_valid_tickets=[],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            '---REGISTER---',
+            'Enter an email: Enter a username: Username format is incorrect',
+            'login',
+            'register',
+            'exit',
+            'Exiting program'
+        ],
+        test_transactions=False,
+        expected_output_transactions=[]
+    )
+
+# Username must be shorter than 20 chars
+def test_r2_9_2(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            'register',
+            'aaa@gmail.com',
+            'aaaaaaaaaaaaaaaaaaaa',
+            'exit'
+        ],
+        input_valid_accounts=[],
+        input_valid_tickets=[],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            '---REGISTER---',
+            'Enter an email: Enter a username: Username format is incorrect',
+            'login',
+            'register',
+            'exit',
+            'Exiting program'
+        ],
+        test_transactions=False,
+        expected_output_transactions=[]
+    )
+
+# Email can't exist in account list
+def test_r2_10(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            'register',
+            'aaa@gmail.com',
+            'exit'
+        ],
+        input_valid_accounts=['aaa@gmail.com,aaa,aaa45,415.03'],
+        input_valid_tickets=[],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            '---REGISTER---',
+            'Enter an email: Email already exists',
+            'login',
+            'register',
+            'exit',
+            'Exiting program'
+        ],
+        test_transactions=False,
+        expected_output_transactions=[]
+    )
+
+# If everything is correct, show message 'account registered' and print landing screen
+def test_r2_12(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            'register',
+            'aaa@gmail.com',
+            'aaa',
+            'Aa.45',
+            'Aa.45',
+            'exit'
+        ],
+        input_valid_accounts=[],
+        input_valid_tickets=[],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            '---REGISTER---',
+            'Enter an email: Enter a username: Enter a password: Confirm your password: Account registered',
+            'login',
+            'register',
+            'exit',
+            'Exiting program'
+        ],
+        test_transactions=False,
+        expected_output_transactions=[]
+    )
+
+# New account gets a balance of 3000
+def test_r2_13(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            'register',
+            'aaa@gmail.com',
+            'aaa',
+            'Aa.45',
+            'Aa.45',
+            'login',
+            'aaa@gmail.com',
+            'Aa.45',
+            'logout',
+            'exit'
+        ],
+        input_valid_accounts=[],
+        input_valid_tickets=[],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            '---REGISTER---',
+            'Enter an email: Enter a username: Enter a password: Confirm your password: Account registered',
+            'login',
+            'register',
+            'exit',
+            '---LOG IN---',
+            'Enter your email: Enter your password: Account logged in',
+            '---Your balance: $3000.00---',
+            'buy',
+            'sell',
+            'update',
+            'logout',
+            'Logout successful',
+            'login',
+            'register',
+            'exit',
+            'Exiting program'
+        ],
+        test_transactions=False,
+        expected_output_transactions=[]
+    )
+
+# Append a registration transaction if succesfully registered
+def test_r2_14(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            'register',
+            'aaa@gmail.com',
+            'aaa',
+            'Aa.45',
+            'Aa.45',
+            'exit'
+        ],
+        input_valid_accounts=[],
+        input_valid_tickets=[],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            '---REGISTER---',
+            'Enter an email: Enter a username: Enter a password: Confirm your password: Account registered',
+            'login',
+            'register',
+            'exit',
+            'Exiting program'
+        ],
+        test_transactions=True,
+        expected_output_transactions=['registration,aaa,aaa@gmail.com,Aa.45,3000.00']
+    )
 
 def helper(
         capsys,
@@ -848,7 +1280,7 @@ def helper(
     formatLong = '\033[91m'+'{:<1s}'+'\x1b[0m'+'{:<80.79s}{:<80}'
     
     #CHANGE FormatShort to FormatLong if outputs are cut off. Widen the console.
-    formatStr = formatShort
+    formatStr = formatLong
     #
     print(formatStr.format('', 'EXPECTED:', 'STD.OUT:'))
     print('===============================================')
