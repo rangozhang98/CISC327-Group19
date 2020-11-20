@@ -17,3 +17,5 @@ buy,aaa,ticket1,10.00,0
 buy,aaa,ticket1,10.00,10
 buy,aaa,ticket1,10.00,20
 buy,aaa,ticket1,10.00,1
+update,aaa,ticket1,15.00,30
+update,aaa,ticket1,10.00,30

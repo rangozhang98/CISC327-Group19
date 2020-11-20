@@ -7,7 +7,7 @@ import src.main as app
 
 path = os.path.dirname(os.path.abspath(__file__))
 
-#tests all of R4.1 by checking if the output is correct when trying to sell while not logged in
+#tests all of R5.1 by checking if the output is correct when trying to buy while not logged in
 def test_r5_1(capsys):
     helper(
         capsys=capsys,
@@ -32,7 +32,7 @@ def test_r5_1(capsys):
         ]
     )
 
-#tests all of R4.2 by checking if the output is correct when a session starts after a proper login and sell option
+#tests all of R5.2 by checking if the output is correct when a session starts after a proper login and buy option
 def test_r5_2(capsys):
     helper(
         capsys=capsys,
@@ -76,7 +76,7 @@ def test_r5_2(capsys):
         ]
     )
 
-#tests all of R4.3 by checking if the output is correct and proper fields are being requested
+#tests all of R5.3 by checking if the output is correct and proper fields are being requested
 def test_r5_3(capsys):
     helper(
         capsys=capsys,
@@ -120,7 +120,7 @@ def test_r5_3(capsys):
         ]
     )
 
-#tests all of R4.4 by checking if the output is correct when valid and invalid ticket names are provided
+#tests all of R5.4 by checking if the output is correct when valid and invalid ticket names are provided
 def test_r5_4(capsys):
     helper(
         capsys=capsys,
@@ -210,7 +210,7 @@ def test_r5_4(capsys):
         ]
     )
 
-#tests all of R4.3 by checking if the output is correct when passed a ticketname of len > 60
+#tests all of R5.3 by checking if the output is correct when passed a ticketname of len > 60
 def test_r5_5(capsys):
     helper(
         capsys=capsys,
@@ -355,7 +355,7 @@ def test_r5_6(capsys):
         ]
     )
 
-#tests all of R4.7 by checking if the output is correct when passed prices out of the range
+#tests all of R4.7 by checking if the output is correct if the users balance is not large enough
 def test_r5_7(capsys):
     helper(
         capsys=capsys,
@@ -409,7 +409,7 @@ def test_r5_7(capsys):
         ]
     )
 
-#tests all of R4.8 by checking if the output is correct when passed a combination of valid and invalid dates
+#tests all of R5.8 by checking if the output is written to the file
 def test_r5_8(capsys):
     helper(
         capsys=capsys,
@@ -450,6 +450,7 @@ def test_r5_8(capsys):
         ],
         test_transactions=False,
         expected_output_transactions=[
+            'buy,aaa,ticket1,10.00,10'
         ]
     )
 
