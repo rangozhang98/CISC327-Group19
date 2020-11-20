@@ -1,6 +1,6 @@
 # CI-Python
 
-[![](https://github.com/rangozhang98/CISC327-Group19/workflows/Python%20application/badge.svg)](https://github.com/rangozhang98/CISC327-Group19/actions?query=workflow%3A%22Python+application%22)
+[![BigBois-BigCode](https://github.com/rangozhang98/CISC327-Group19/workflows/Python%20application/badge.svg)](https://github.com/rangozhang98/CISC327-Group19/actions?query=workflow%3A%22Python+application%22)
 
 ### Python CI template for GitHub Actions
 
