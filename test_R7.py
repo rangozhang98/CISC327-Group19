@@ -27,6 +27,7 @@ def test_r7_1(capsys):
             "exit",
             'Exiting program'
         ],
+        test_transactions=False,
         expected_output_transactions=[
         ]
     )
@@ -62,6 +63,7 @@ def test_r7_2(capsys):
             "exit",
             'Exiting program'
         ],
+        test_transactions=False,
         expected_output_transactions=[
         ]
     )
@@ -72,6 +74,7 @@ def helper(
         input_valid_accounts,
         input_valid_tickets,
         expected_tail_of_terminal_output,
+        test_transactions,
         expected_output_transactions
 ):
     """Helper function for testing
@@ -89,7 +92,6 @@ def helper(
 
     # create a temporary file in the system to store output transactions
     temp_fd, temp_file = tempfile.mkstemp()
-    transaction_summary_file = temp_file
 
     # create a temporary file in the system to store the valid accounts:
     temp_fd2, temp_file2 = tempfile.mkstemp()
@@ -131,17 +133,18 @@ def helper(
         assert expected_tail_of_terminal_output[index] == out_lines[index]
     
     # compare transactions:
-    with open(transaction_summary_file, 'r') as of:
-        content = of.read().splitlines()
-        
-        # print out the testing information for debugging
-        # the following print content will only display if a 
-        # test case failed:
-        print('output transactions:', content)
-        print('output transactions (expected):', expected_output_transactions)
-        
-        for ind in range(len(content)):
-            assert content[ind] == expected_output_transactions[ind]
+    if test_transactions:
+        with open(sys.argv[1]+'_transactions.csv', 'r') as of:
+            content = of.read().splitlines()
+            
+            # print out the testing information for debugging
+            # the following print content will only display if a 
+            # test case failed:
+            print('output transactions:', content)
+            print('output transactions (expected):', expected_output_transactions)
+            
+            for ind in range(len(content)):
+                assert content[ind] == expected_output_transactions[ind]
 
     # clean up
     os.close(temp_fd)
