@@ -7,7 +7,7 @@ import src.main as app
 
 path = os.path.dirname(os.path.abspath(__file__))
 
-#tests all of R4.1 by checking if the output is correct when trying to sell while not logged in
+#tests all of R4.1 by checking if the output is correct when trying to update while not logged in
 def test_r6_1(capsys):
     helper(
         capsys=capsys,
@@ -31,7 +31,7 @@ def test_r6_1(capsys):
         ]
     )
 
-#tests all of R4.2 by checking if the output is correct when a session starts after a proper login and sell option
+#tests all of R4.2 by checking if the output is correct when a session starts after a proper login and update option
 def test_r6_2(capsys):
     helper(
         capsys=capsys,
@@ -604,6 +604,52 @@ def test_r6_8(capsys):
         ]
     )
 
+#tests all of R6.9 by checking if the output is correct when written to a file
+def test_r6_9(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            "login",
+            'aaa@gmail.com',
+            'aaa45',
+            'update',
+            'ticket1',
+            '10',
+            '5',
+            '20200101',
+            'logout',
+            'exit'
+        ],
+        input_valid_accounts=['aaa@gmail.com,aaa,aaa45,415.03'],
+        input_valid_tickets=['ticket1,10.00,30,aaa@gmail.com'],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            '---LOG IN---',
+            'Enter your email: Enter your password: Account logged in',
+            '---Your balance: $415.03---',
+            'buy',
+            'sell',
+            'update',
+            'logout',
+            '---UPDATE---',
+            "Enter the ticket name: Enter the ticket price: Enter the ticket quantity: Enter the ticket date: ---Your balance: $415.03---",
+            'buy',
+            'sell',
+            'update',
+            'logout',
+            'Logout successful',
+            "login",
+            "register",
+            "exit",
+            'Exiting program'
+        ],
+        expected_output_transactions=[
+            'update,aaa,ticket1,10.00,5'
+        ]
+    )
+
 def helper(
         capsys,
         terminal_input,
@@ -663,6 +709,48 @@ def helper(
     # split terminal output in lines
     out_lines = out.splitlines()
     
+    # print out the testing information for debugging
+    # the following print content will only display if a 
+    # test case failed:
+    print()
+    print('STD.IN:', terminal_input)
+    print('VALID ACCOUNTS:', input_valid_accounts)
+    print('VALID TICKETS: ', input_valid_tickets)
+    print()
+    # formatted output comparison
+    outLen = len(out_lines)
+    expLen = len(expected_tail_of_terminal_output)
+    endInd = outLen-expLen
+    formatShort = '\033[91m'+'{:<1s}'+'\x1b[0m'+'{:<35.34s}{:<35.35s}'
+    formatLong = '\033[91m'+'{:<1s}'+'\x1b[0m'+'{:<80.79s}{:<80}'
+    
+    #-------- CHANGE FormatShort to FormatLong if outputs are cut off. Widen the console.
+    formatStr = formatShort
+    #------------------------
+    print(formatStr.format('', 'EXPECTED:', 'STD.OUT:'))
+    print('===============================================')
+    if (endInd > 0):
+        for i in range(expLen):
+            print(formatStr.format('' if expected_tail_of_terminal_output[i] == out_lines[i] else '*', expected_tail_of_terminal_output[i], out_lines[i]))
+        for o in range(expLen, outLen):
+            print(formatStr.format('', '', out_lines[o]))
+    elif (endInd < 0):
+        for i in range(outLen):
+            print(formatStr.format('' if expected_tail_of_terminal_output[i] == out_lines[i] else '*', expected_tail_of_terminal_output[i], out_lines[i]))
+        for e in range(outLen, expLan):
+            print(formatStr.format('', expected_tail_of_terminal_output[i], ''))
+    else:
+        for i in range(outLen):
+            print(formatStr.format('' if expected_tail_of_terminal_output[i] == out_lines[i] else '*', expected_tail_of_terminal_output[i], out_lines[i]))
+    
+    # print('terminal output:', out_lines)
+    # print('terminal output (expected tail):', expected_tail_of_terminal_output)
+
+
+
+
+
+
     # compare terminal outputs at the end.`
     for i in range(1, len(expected_tail_of_terminal_output)+1):
         index = i * -1
