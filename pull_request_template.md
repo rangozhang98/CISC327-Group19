@@ -4,8 +4,6 @@ Please include a summary of the change and which issue is fixed. Please also inc
 
 ## Type of change
 
-Please delete options that are not relevant.
-
 - [ ] Bug Fix (non-breaking change which fixes an issue)
 - [ ] New Feature (non-breaking change which adds functionality)
 - [ ] New Tests (non-breaking addition to tests)
