@@ -227,6 +227,15 @@ def helper(
     # split terminal output in lines
     out_lines = out.splitlines()
 
+    # print out the testing information for debugging
+    # the following print content will only display if a 
+    # test case failed:
+    print('std.in:', terminal_input)
+    print('valid accounts:', input_valid_accounts)
+    print('valid tickets:', input_valid_tickets)
+    print('terminal output:', out_lines)
+    print('terminal output (expected tail):', expected_tail_of_terminal_output)
+    
     # compare terminal outputs at the end.`
     for i in range(1, len(expected_tail_of_terminal_output)+1):
         index = i * -1

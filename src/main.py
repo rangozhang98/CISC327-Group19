@@ -101,7 +101,7 @@ def register():
             for i in range(len(domain)):
                 c = domain[i]
                 # invalid if char is a consecutive period or isn't alpha-numeric
-                if not c.isalnum() and not (c == '.' and domain[i-1] != '.' and domain[i+1] != '.'):
+                if not c.isalnum() and not c == '.' and not c == '-':
                     validEmail = False
                     break
         else:
