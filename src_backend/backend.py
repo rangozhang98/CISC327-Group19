@@ -4,7 +4,6 @@ accountsPath = 'accounts.csv'
 ticketsPath = 'tickets.csv'
 filled = False
 
-# ---- will not work with nonexistent file names as arguments because process() tries to open them -----------
 def main():
     try:
         transactionFiles = []
@@ -19,6 +18,7 @@ def main():
 
 #checks if buy is valid and changes ticket amount and buyer balance
 def checkBuy(transaction, tickets, accounts):
+    errorMessage = ''
     for ticket in tickets:
          if ticket[0] == transaction[1]:
              if int(ticket[2]) >= int(transaction[-1]):
@@ -39,7 +39,7 @@ def checkBuy(transaction, tickets, accounts):
 
 # checks if sell is valid
 def checkSell(transaction, tickets, accounts):
-     
+    errorMessage = ''
     for ticket in tickets:
          if ticket[0] == transaction[1]:
              if int(ticket[2]) >= int(transaction[-1]):
@@ -61,7 +61,6 @@ def checkSell(transaction, tickets, accounts):
 
 #updates stuff if its the correct person trying to update the ticket        
 def checkUpdate(transaction, tickets, accounts):
-     
     for ticket in tickets:
          if ticket[0] == transaction[1]:
              for account in accounts:
@@ -74,6 +73,7 @@ def checkUpdate(transaction, tickets, accounts):
 
 #updates accounts file to include newly registered accounts
 def checkRegistration(transaction, accounts):
+    errorMessage = ''
     newEmail = True
     for account in accounts:
         if transaction[2] == account[0]:
@@ -89,7 +89,6 @@ def checkRegistration(transaction, accounts):
 # Each transaction has to satisfy the constraints specificed in the frontend requirement. 
 # For example, a ticket purchase transaction has to make sure that there are enough tickets in order to proceeed.
 def process(transactionFiles):
-
     updatedTickets = []
     updatedAccounts = []
     errorMessage = ""
@@ -97,12 +96,12 @@ def process(transactionFiles):
     #read in the data from the accounts and tickets files
     ticketFile = open(ticketsPath, "r")
     for line in ticketFile:
-        tickets = line.split(',')
+        tickets = line[:-1].split(',')
         updatedTickets.append(tickets)
 
     accountsFile = open(accountsPath, "r")
     for line in accountsFile:
-        accounts = line.split(',')
+        accounts = line[:-1].split(',')
         updatedAccounts.append(accounts)
 
     # for each file
@@ -110,7 +109,7 @@ def process(transactionFiles):
         file = open(transactionFile, "r")
         # for each transaction
         for line in file:
-            transaction = line.split(',')
+            transaction = line[:-1].split(',')
             # if somehow invalid then log error in console
 
             if transaction[0].lower() == "buy":
