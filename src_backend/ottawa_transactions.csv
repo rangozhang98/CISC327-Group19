@@ -1,5 +1,5 @@
-registration,test3,test35@gmail.com,Test3.,3000.00
-buy,test3,ticket2,20.00,50
-sell,test3,ticket,15.00,50
-sell,test3,newTicket,30.00,20
-update,test3,ticket1,15.00,100
+registration,ottawaUser,ottawa@gmail.com,Ottawa3.,3000.00
+buy,ottawaUser,ticket2,20.00,50
+sell,ottawaUser,ottawaTicket,15.00,50
+sell,ottawaUser,ottawaTicket,30.00,20
+update,ottawaUser,ticket1,15.00,100

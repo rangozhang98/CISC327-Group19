@@ -59,8 +59,8 @@ def test_r8_2(capsys):
             'Aa.45',
             'Aa.45',
             "login",
-            'aaa@gmail.com',
-            'Aa.45',
+            'account@gmail.com',
+            'pass45',
             'buy',
             'ticket1',
             '20',
@@ -77,7 +77,7 @@ def test_r8_2(capsys):
             'logout',
             'exit'
         ],
-        input_valid_accounts=[],
+        input_valid_accounts=['account@gmail.com,account,pass45,3000.00'],
         input_valid_tickets=['ticket1,10.00,30,aaa@gmail.com'],
         expected_tail_of_terminal_output=[
             "login",
@@ -122,9 +122,9 @@ def test_r8_2(capsys):
         test_transactions=True,
         expected_output_transactions=[
             'registration,aaa,aaa@gmail.com,Aa.45,3000.00',
-            'buy,aaa,ticket1,10.00,20',
-            'sell,aaa,ticket1,10.00,20',
-            'update,aaa,ticket1,15.00,100'
+            'buy,account,ticket1,10.00,20',
+            'sell,account,ticket1,10.00,20',
+            'update,account,ticket1,15.00,100'
         ]
     )
 
