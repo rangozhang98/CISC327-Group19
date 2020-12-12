@@ -1,4 +1,0 @@
-registration,kingstonUser,kingston@domain.com,Kingston1.,3000.00
-buy,kingstonUser,ticket1,15.00,5
-sell,kingstonUser,kingstonTicket,10.00,10
-update,kingstonUser,ticket1,10.00,100
