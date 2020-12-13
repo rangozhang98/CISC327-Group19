@@ -12,13 +12,12 @@ def test_buy(capsys):
     helper(
         capsys=capsys,
         terminal_input=[],
-        input_valid_transactions1=['buy,torontoUser,ticket1,15.00,5'],
-        input_valid_transactions2=['buy,torontoUser,ticket2,20.00,20'],
+        a_transactions=['buy,torontoUser,ticket1,15.00,5'],
+        b_transactions=['buy,torontoUser,ticket2,20.00,20'],
         expected_tail_of_terminal_output=[],
-        test_transactions=True,
         expected_output_updatedAccounts=['aaa@gmail.com,aaa,aaa45,415.03', 'www@gmail.com,zzzzz,Zz.45,3000.00', 
         'zzz@gmail.com,zzzzz,Zz.45,3000.00', 'ddd@gmail.com,aaa,aaa45,15.03', 
-        'kingston@domain.com,kingstonUser,Kingston1.,3000.00', 'ottawa@gmail.com,ottawaUser,Ottawa3.,3000.00', 
+        'ottawa@gmail.com,ottawaUser,Ottawa3.,3000.00', 
         'toronto@gmail.com,torontoUser,Toronto2.,3000.00'],
         expected_output_updatedTickets=['ticket1,15.00,30,aaa@gmail.com', 'ticket2,20.00,50,bbb@gmail.com']
     )
@@ -27,13 +26,12 @@ def test_sell(capsys):
     helper(
         capsys=capsys,
         terminal_input=[],
-        input_valid_transactions1=['sell,ottawaUser,ottawaTicket,15.00,50'],
-        input_valid_transactions2=['buy,torontoUser,ticket1,15.00,20'],
+        a_transactions=['sell,ottawaUser,ottawaTicket,15.00,50'],
+        b_transactions=['buy,torontoUser,ticket1,15.00,20'],
         expected_tail_of_terminal_output=[],
-        test_transactions=True,
         expected_output_updatedAccounts=['aaa@gmail.com,aaa,aaa45,415.03', 'www@gmail.com,zzzzz,Zz.45,3000.00', 
         'zzz@gmail.com,zzzzz,Zz.45,3000.00', 'ddd@gmail.com,aaa,aaa45,15.03', 
-        'kingston@domain.com,kingstonUser,Kingston1.,3000.00', 'ottawa@gmail.com,ottawaUser,Ottawa3.,3000.00', 
+        'ottawa@gmail.com,ottawaUser,Ottawa3.,3000.00', 
         'toronto@gmail.com,torontoUser,Toronto2.,3000.00'],
         expected_output_updatedTickets=['ticket1,15.00,30,aaa@gmail.com', 'ticket2,20.00,50,bbb@gmail.com']
     )
@@ -42,13 +40,12 @@ def test_registration(capsys):
     helper(
         capsys=capsys,
         terminal_input=[],
-        input_valid_transactions1=['registration,torontoUser,toronto@gmail.com,Toronto2.,3000.00'],
-        input_valid_transactions2=['buy,torontoUser,ticket1,15.00,20'],
+        a_transactions=['registration,torontoUser,toronto@gmail.com,Toronto2.,3000.00'],
+        b_transactions=['buy,torontoUser,ticket1,15.00,20'],
         expected_tail_of_terminal_output=[],
-        test_transactions=True,
         expected_output_updatedAccounts=['aaa@gmail.com,aaa,aaa45,415.03', 'www@gmail.com,zzzzz,Zz.45,3000.00', 
         'zzz@gmail.com,zzzzz,Zz.45,3000.00', 'ddd@gmail.com,aaa,aaa45,15.03', 
-        'kingston@domain.com,kingstonUser,Kingston1.,3000.00', 'ottawa@gmail.com,ottawaUser,Ottawa3.,3000.00', 
+        'ottawa@gmail.com,ottawaUser,Ottawa3.,3000.00', 
         'toronto@gmail.com,torontoUser,Toronto2.,3000.00'],
         expected_output_updatedTickets=['ticket1,15.00,30,aaa@gmail.com', 'ticket2,20.00,50,bbb@gmail.com']
     )
@@ -56,22 +53,13 @@ def test_registration(capsys):
 def helper(
         capsys,
         terminal_input,
-        input_valid_transactions1,
-        input_valid_transactions2,
+        a_transactions,
+        b_transactions,
         expected_tail_of_terminal_output,
-        test_transactions,
         expected_output_updatedAccounts,
         expected_output_updatedTickets
 ):
-    """Helper function for testing
-
-    Arguments:
-        capsys -- object created by pytest to capture stdout and stderr
-        terminal_input -- list of string for terminal input
-        expected_tail_of_terminal_output list of expected string at the tail of terminal
-        input_valid_accounts -- list of valid accounts in the valid_account_list_file
-        expected_output_transactions -- list of expected output transactions
-    """
+    # Helper function for testing
 
     # cleanup package
     reload(app)
@@ -79,23 +67,22 @@ def helper(
     # create a temporary file in the system to store output transactions
     temp_fd, temp_file = tempfile.mkstemp()
 
-    # create a temporary file in the system to store the valid accounts:
     
-    temp_fd4, temp_file4 = tempfile.mkstemp()
-    valid_transaction_list_file1 = temp_file4
-    with open(valid_transaction_list_file1, 'w') as wf:
-        wf.write('\n'.join(input_valid_transactions1))
+    temp_fd2, temp_file2 = tempfile.mkstemp()
+    temp_a_transactions = temp_file2
+    with open(temp_a_transactions, 'w') as wf:
+        wf.write('\n'.join(a_transactions) + '\n')
 
-    temp_fd5, temp_file5 = tempfile.mkstemp()
-    valid_transaction_list_file2 = temp_file5
-    with open(valid_transaction_list_file2, 'w') as wf:
-        wf.write('\n'.join(input_valid_transactions2))
+    temp_fd3, temp_file3 = tempfile.mkstemp()
+    temp_b_transactions = temp_file3
+    with open(temp_b_transactions, 'w') as wf:
+        wf.write('\n'.join(b_transactions) + '\n')
 
     # prepare program parameters
     sys.argv = [
         'backend.py',
-        valid_transaction_list_file1,
-        valid_transaction_list_file2
+        temp_a_transactions,
+        temp_b_transactions
     ]
 
     # set terminal input
@@ -122,32 +109,32 @@ def helper(
         assert expected_tail_of_terminal_output[index] == out_lines[index]
     
     # compare accounts:
-    if test_transactions:
-        with open('src_backend/updated_accounts.csv', 'r') as of:
-            content = of.read().splitlines()
-            
-            # print out the testing information for debugging
+    with open('src_backend/updated_accounts.csv', 'r') as of:
+        content = of.read().splitlines()
+        
+        # print out the testing information for debugging
+        # the following print content will only display if a 
             # the following print content will only display if a 
-            # test case failed:
-            print('output accounts:', content)
-            print('output accounts (expected):', expected_output_updatedAccounts)
-            
-            for ind in range(len(content)):
-                assert content[ind] == expected_output_updatedAccounts[ind]
+        # the following print content will only display if a 
+        # test case failed:
+        print('updated accounts:', content)
+        print('updated accounts (expected):', expected_output_updatedAccounts)
+        
+        for ind in range(len(content)):
+            assert content[ind] == expected_output_updatedAccounts[ind]
 
     # compare transactions:
-    if test_transactions:
-        with open('src_backend/updated_tickets.csv', 'r') as of:
-            content = of.read().splitlines()
-            
-            # print out the testing information for debugging
-            # the following print content will only display if a 
-            # test case failed:
-            print('output tickets:', content)
-            print('output tickets (expected):', expected_output_updatedTickets)
-            
-            for ind in range(len(content)):
-                assert content[ind] == expected_output_updatedTickets[ind]
+    with open('src_backend/updated_tickets.csv', 'r') as of:
+        content = of.read().splitlines()
+        
+        # print out the testing information for debugging
+        # the following print content will only display if a 
+        # test case failed:
+        print('updated tickets:', content)
+        print('updated tickets (expected):', expected_output_updatedTickets)
+        
+        for ind in range(len(content)):
+            assert content[ind] == expected_output_updatedTickets[ind]
 
     # clean up
     os.close(temp_fd)

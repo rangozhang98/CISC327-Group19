@@ -1,20 +1,20 @@
 import sys
 import csv
-accountsPath = 'src_backend/accounts.csv'
-ticketsPath = 'src_backend/tickets.csv'
+accountsPath = 'accounts.csv'
+ticketsPath = 'tickets.csv'
 filled = False
 
 def main():
-    #try:
+    try:
         transactionFiles = []
         for i in range(1, len(sys.argv)):
             transactionFiles.append(sys.argv[i])
         transactionFiles.sort()
         # array ready to process
         process(transactionFiles)
-    #except:
+    except:
         # instruct user how to run the program if arguments are wrong
-    #    print("Program needs arguments: {transaction_file_1.csv}, {transaction_file_2.csv}, etc...")
+        print("Program needs arguments: {transaction_file_1.csv}, {transaction_file_2.csv}, etc...")
 
 #checks if buy is valid and changes ticket amount and buyer balance
 def checkBuy(transaction, tickets, accounts):
@@ -49,7 +49,6 @@ def checkBuy(transaction, tickets, accounts):
 def checkSell(transaction, tickets, accounts):
 
     filled = True
-    sellerEmail = ''
     errorMessage = ''
     
     for ticket in tickets:
@@ -58,9 +57,9 @@ def checkSell(transaction, tickets, accounts):
 
     if filled == True:
         for account in accounts:
-            if account[1] == transaction[2]:
+            if account[1] == transaction[1]:
                 sellerEmail = account[0]
-        tickets.append([transaction[2],transaction[3],transaction[4],sellerEmail])
+                tickets.append([transaction[2],transaction[3],transaction[4],sellerEmail])
     else:
         errorMessage = "The sell transaction was not filled"
 
@@ -148,4 +147,6 @@ def update(accounts, tickets):
 
     return
 
-main()
+##### call main method #####
+if __name__ == "__main__":
+    main()
