@@ -1,61 +1,68 @@
 import sys
 import csv
-accountsPath = 'accounts.csv'
-ticketsPath = 'tickets.csv'
+accountsPath = 'src_backend/accounts.csv'
+ticketsPath = 'src_backend/tickets.csv'
 filled = False
 
 def main():
-    try:
+    #try:
         transactionFiles = []
         for i in range(1, len(sys.argv)):
             transactionFiles.append(sys.argv[i])
         transactionFiles.sort()
         # array ready to process
         process(transactionFiles)
-    except:
+    #except:
         # instruct user how to run the program if arguments are wrong
-        print("Program needs arguments: {transaction_file_1.csv}, {transaction_file_2.csv}, etc...")
+    #    print("Program needs arguments: {transaction_file_1.csv}, {transaction_file_2.csv}, etc...")
 
 #checks if buy is valid and changes ticket amount and buyer balance
 def checkBuy(transaction, tickets, accounts):
     errorMessage = ''
+    filled = False
     for ticket in tickets:
-         if ticket[0] == transaction[1]:
+         if ticket[0] == transaction[2]:
+             sellerEmail = ticket[3]
              if int(ticket[2]) >= int(transaction[-1]):
                  ticket[2] = int(ticket[2]) - int(transaction[-1])
-                 global filled
                  filled = True
                  break
 
     if filled == True:
+        changeInBalance = (float(transaction[3])*int(transaction[4]) + float(transaction[3])*0.35 + float(transaction[3])*0.05)
         for account in accounts:
             if account[1] == transaction[1]:
-                account[3] = int(account[3]) - (int(transaction[3])*int(transaction[4]) + int(transaction[3])*0.35 + int(transaction[3])*0.05)
-                break
+                changeInBalance = (float(transaction[3])*int(transaction[4]) + float(transaction[3])*0.35
+                 + float(transaction[3])*0.05)
+                account[3] = float(account[3]) - changeInBalance
+
+            if account[0] == sellerEmail:
+                account[3] = float(account[3]) + changeInBalance
+
     else:
-        errorMessage = "The buy transaction was not filled"
+        print("The buy transaction was not filled for the transaction: ")
+        print(transaction)
 
     return(tickets, accounts, errorMessage)
 
 # checks if sell is valid
 def checkSell(transaction, tickets, accounts):
+
+    filled = True
+    sellerEmail = ''
     errorMessage = ''
+    
     for ticket in tickets:
-         if ticket[0] == transaction[1]:
-             if int(ticket[2]) >= int(transaction[-1]):
-                 ticket[2] = int(ticket[2]) - int(transaction[-1])
-                 global filled
-                 filled = True
-                 break
+         if ticket[0] == transaction[2]:
+             filled = False
 
     if filled == True:
         for account in accounts:
-            if account[1] == transaction[1]:
-                account[3] = int(account[3]) + (int(transaction[3])*int(transaction[4]) + int(transaction[3])*0.35 + int(transaction[3])*0.05)
-                break
+            if account[1] == transaction[2]:
+                sellerEmail = account[0]
+        tickets.append([transaction[2],transaction[3],transaction[4],sellerEmail])
     else:
         errorMessage = "The sell transaction was not filled"
-
 
     return(tickets, accounts, errorMessage)
 
