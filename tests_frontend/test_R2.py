@@ -1089,35 +1089,3 @@ def helper(
     os.remove(temp_file)
     # remove transaction file
     os.remove(sys.argv[1]+'_transactions.csv')
-
-def outputFormat(terminal_input, input_valid_accounts, input_valid_tickets, out_lines, expected_tail_of_terminal_output):
-    print()
-    print('STD.IN:', terminal_input)
-    print('VALID ACCOUNTS:', input_valid_accounts)
-    print('VALID TICKETS: ', input_valid_tickets)
-    print()
-    # formatted output comparison
-    outLen = len(out_lines)
-    expLen = len(expected_tail_of_terminal_output)
-    endInd = outLen-expLen
-    formatShort = '\033[91m'+'{:<1s}'+'\x1b[0m'+'{:<35.34s}{:<35.35s}'
-    formatLong = '\033[91m'+'{:<1s}'+'\x1b[0m'+'{:<80.79s}{:<80}'
-
-    #CHANGE FormatShort to FormatLong if outputs are cut off. Widen the console.
-    formatStr = formatShort
-    #
-    print(formatStr.format('', 'EXPECTED:', 'STD.OUT:'))
-    print('===============================================')
-    if (endInd > 0):
-        for i in range(expLen):
-            print(formatStr.format('' if expected_tail_of_terminal_output[i] == out_lines[i] else '*', expected_tail_of_terminal_output[i], out_lines[i]))
-        for o in range(expLen, outLen):
-            print(formatStr.format('', '', out_lines[o]))
-    elif (endInd < 0):
-        for i in range(outLen):
-            print(formatStr.format('' if expected_tail_of_terminal_output[i] == out_lines[i] else '*', expected_tail_of_terminal_output[i], out_lines[i]))
-        for e in range(outLen, expLan):
-            print(formatStr.format('', expected_tail_of_terminal_output[i], ''))
-    else:
-        for i in range(outLen):
-            print(formatStr.format('' if expected_tail_of_terminal_output[i] == out_lines[i] else '*', expected_tail_of_terminal_output[i], out_lines[i]))
