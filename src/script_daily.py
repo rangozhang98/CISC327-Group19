@@ -6,9 +6,6 @@ import sys
 import frontend
 import backend
 from time import sleep
-from os import system
-from os import name
-clear = lambda: system('cls' if name=='nt' else 'clear')
 
 accountsPath = 'accounts.csv'
 ticketsPath = 'tickets.csv'
@@ -45,7 +42,7 @@ def run_backend(input_cities):
     # prepare program parameters
     sys.argv = ['backend.py']
     for city in input_cities:
-        sys.argv.append(city + "_transactions.csv")
+        sys.argv.append('transactions/' + city + "_transactions.csv")
 
     # run the program
     backend.main()
