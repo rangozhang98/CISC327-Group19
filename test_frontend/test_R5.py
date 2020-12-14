@@ -3,7 +3,7 @@ from importlib import reload
 import os
 import io
 import sys
-import src_frontend.main as app
+import src.frontend as app
 
 path = os.path.dirname(os.path.abspath(__file__))
 
@@ -281,9 +281,6 @@ def test_r5_6(capsys):
             'buy',
             'ticket1',
             '20',
-            'buy',
-            'ticket1',
-            '20',
             'logout',
             'exit'
         ],
@@ -328,13 +325,6 @@ def test_r5_6(capsys):
             'logout',
             '---BUY---',
             "Enter the ticket name: Enter the ticket quantity: ---Your balance: $998995.03---",
-            'buy',
-            'sell',
-            'update',
-            'logout',
-            '---BUY---',
-            "Enter the ticket name: Enter the ticket quantity: Ticket quantity is invalid",
-            '---Your balance: $998995.03---',
             'buy',
             'sell',
             'update',

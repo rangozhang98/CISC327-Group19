@@ -3,7 +3,7 @@ from importlib import reload
 import os
 import io
 import sys
-import src_frontend.main as app
+import src.frontend as app
 
 path = os.path.dirname(os.path.abspath(__file__))
 
@@ -948,10 +948,6 @@ def test_r2_13(capsys):
             'aaa',
             'Aa.45',
             'Aa.45',
-            'login',
-            'aaa@gmail.com',
-            'Aa.45',
-            'logout',
             'exit'
         ],
         input_valid_accounts=[],
@@ -965,21 +961,10 @@ def test_r2_13(capsys):
             'login',
             'register',
             'exit',
-            '---LOG IN---',
-            'Enter your email: Enter your password: Account logged in',
-            '---Your balance: $3000.00---',
-            'buy',
-            'sell',
-            'update',
-            'logout',
-            'Logout successful',
-            'login',
-            'register',
-            'exit',
             'Exiting program'
         ],
-        test_transactions=False,
-        expected_output_transactions=[]
+        test_transactions=True,
+        expected_output_transactions=['registration,aaa,aaa@gmail.com,Aa.45,3000.00']
     )
 
 # Append a registration transaction if succesfully registered
@@ -1078,6 +1063,7 @@ def helper(
     print('valid tickets:', input_valid_tickets)
     print('terminal output:', out_lines)
     print('terminal output (expected tail):', expected_tail_of_terminal_output)
+    # outputFormat(terminal_input, input_valid_accounts, input_valid_tickets, out_lines, expected_tail_of_terminal_output)
 
     # compare terminal outputs at the end.`
     for i in range(1, len(expected_tail_of_terminal_output)+1):

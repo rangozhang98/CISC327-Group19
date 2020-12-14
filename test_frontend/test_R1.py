@@ -3,19 +3,165 @@ from importlib import reload
 import os
 import io
 import sys
-import src_frontend.main as app
+import src.frontend as app
 
 path = os.path.dirname(os.path.abspath(__file__))
 
-# command invalid if user is logged in
-def test_r8_1(capsys):
+#tests all of R1.1 by checking if the output is correct for when logged in
+def test_r1_1(capsys):
     helper(
         capsys=capsys,
         terminal_input=[
             "login",
             'aaa@gmail.com',
             'aaa45',
-            'exit',
+            'logout',
+            'exit'
+        ],
+        input_valid_accounts=['aaa@gmail.com,aaa,aaa45,415.03'],
+        input_valid_tickets=[],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            '---LOG IN---',
+            'Enter your email: Enter your password: Account logged in',
+            '---Your balance: $415.03---',
+            'buy',
+            'sell',
+            'update',
+            'logout',
+            'Logout successful',
+            "login",
+            "register",
+            "exit",
+            'Exiting program'
+        ],
+        test_transactions=False,
+        expected_output_transactions=[]
+    )
+
+#tests all of R1.2 by checking if the output is correct for when not logged in
+def test_r1_2(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            'exit'
+        ],
+        input_valid_accounts=[],
+        input_valid_tickets=[],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            'Exiting program'
+        ],
+        test_transactions=False,
+        expected_output_transactions=[]
+    )
+
+#goes to all pages fails something to get sent back to landing and then goes to another
+def test_r1_3(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            'register',
+            '123',
+            "login",
+            'aaa@gmail.com',
+            'aaa45',
+            'buy',
+            ' ',
+            'sell',
+            ' ',
+            'update',
+            '%',
+            'logout',
+            'exit'
+        ],
+        input_valid_accounts=['aaa@gmail.com,aaa,aaa45,415.03'],
+        input_valid_tickets=[],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            '---REGISTER---',
+            'Enter an email: '
+            'Email format is incorrect',
+            "login",
+            "register",
+            "exit",
+            '---LOG IN---',
+            'Enter your email: Enter your password: Account logged in',
+            '---Your balance: $415.03---',
+            'buy',
+            'sell',
+            'update',
+            'logout',
+            "---BUY---",
+            "Enter the ticket name: Ticket name is invalid",
+            '---Your balance: $415.03---',
+            'buy',
+            'sell',
+            'update',
+            'logout',
+            '---SELL---',
+            "Enter the ticket name: Ticket name is invalid",
+            '---Your balance: $415.03---',
+            'buy',
+            'sell',
+            'update',
+            'logout',
+            '---UPDATE---',
+            'Enter the ticket name: Name is invalid',
+            '---Your balance: $415.03---',
+            'buy',
+            'sell',
+            'update',
+            'logout',
+            'Logout successful',
+            "login",
+            "register",
+            "exit",
+            'Exiting program'
+        ],
+        test_transactions=False,
+        expected_output_transactions=[]
+    )
+
+#tests when an invalid input is sent when not logged in
+def test_r1_4(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            'a',
+            'exit'
+        ],
+        input_valid_accounts=[],
+        input_valid_tickets=[],
+        expected_tail_of_terminal_output=[
+            "login",
+            "register",
+            "exit",
+            "Command invalid",
+            "login",
+            "register",
+            "exit",
+            'Exiting program'
+        ],
+        test_transactions=False,
+        expected_output_transactions=[]
+    )
+
+#tests when in invalid input is sent on the login screen
+def test_r1_5(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[
+            "login",
+            'aaa@gmail.com',
+            'aaa45',
+            'a',
             'logout',
             'exit'
         ],
@@ -48,95 +194,14 @@ def test_r8_1(capsys):
         expected_output_transactions=[]
     )
 
-# Produce output file based on the program output details 
-def test_r8_2(capsys):
-    helper(
-        capsys=capsys,
-        terminal_input=[
-            'register',
-            'aaa@gmail.com',
-            'aaa',
-            'Aa.45',
-            'Aa.45',
-            "login",
-            'aaa@gmail.com',
-            'Aa.45',
-            'buy',
-            'ticket1',
-            '20',
-            'sell',
-            'ticket1',
-            '10.00',
-            '20',
-            '20200202',
-            'update',
-            'ticket1',
-            '15',
-            '100',
-            '20200202',
-            'logout',
-            'exit'
-        ],
-        input_valid_accounts=[],
-        input_valid_tickets=['ticket1,10.00,30,aaa@gmail.com'],
-        expected_tail_of_terminal_output=[
-            "login",
-            "register",
-            "exit",
-            '---REGISTER---',
-            'Enter an email: Enter a username: Enter a password: Confirm your password: Account registered',
-            'login',
-            'register',
-            'exit',
-            '---LOG IN---',
-            'Enter your email: Enter your password: Account logged in',
-            '---Your balance: $3000.00---',
-            'buy',
-            'sell',
-            'update',
-            'logout',
-            '---BUY---',
-            "Enter the ticket name: Enter the ticket quantity: ---Your balance: $2720.00---",
-            'buy',
-            'sell',
-            'update',
-            'logout',
-            '---SELL---',
-            "Enter the ticket name: Enter the ticket price: Enter the ticket quantity: Enter the ticket date: ---Your balance: $2720.00---",
-            'buy',
-            'sell',
-            'update',
-            'logout',
-            '---UPDATE---',
-            "Enter the ticket name: Enter the ticket price: Enter the ticket quantity: Enter the ticket date: ---Your balance: $2720.00---",
-            'buy',
-            'sell',
-            'update',
-            'logout',
-            'Logout successful',
-            'login',
-            'register',
-            'exit',
-            'Exiting program'
-        ],
-        test_transactions=True,
-        expected_output_transactions=[
-            'registration,aaa,aaa@gmail.com,Aa.45,3000.00',
-            'buy,aaa,ticket1,10.00,20',
-            'sell,aaa,ticket1,10.00,20',
-            'update,aaa,ticket1,15.00,100'
-        ]
-    )
-
-    
 def helper(
-    capsys,
-    terminal_input,
-    input_valid_accounts,
-    input_valid_tickets,
-    expected_tail_of_terminal_output,
-    test_transactions,
-    expected_output_transactions
+        capsys,
+        terminal_input,
+        input_valid_accounts,
+        input_valid_tickets,
+        expected_tail_of_terminal_output,
+        test_transactions,
+        expected_output_transactions
 ):
     """Helper function for testing
 
@@ -187,7 +252,7 @@ def helper(
 
     # split terminal output in lines
     out_lines = out.splitlines()
-
+    
     # print out the testing information for debugging
     # the following print content will only display if a 
     # test case failed:

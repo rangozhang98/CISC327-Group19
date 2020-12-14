@@ -3,20 +3,16 @@ from importlib import reload
 import os
 import io
 import sys
-import src_frontend.main as app
+import src.frontend as app
 
 path = os.path.dirname(os.path.abspath(__file__))
 
-#tests all of R3.1 by checking if the command login is invalid if already logged in
-def test_r3_1(capsys):
+#tests all of R7.1 by checking if the command logout is invalid if the user is not logged in
+def test_r7_1(capsys):
     helper(
         capsys=capsys,
         terminal_input=[
-            "login",
-            'aaa@gmail.com',
-            'aaa45',
-            'login',
-            'logout',
+            "logout",
             'exit'
         ],
         input_valid_accounts=['aaa@gmail.com,aaa,aaa45,415.03'],
@@ -25,20 +21,7 @@ def test_r3_1(capsys):
             "login",
             "register",
             "exit",
-            '---LOG IN---',
-            'Enter your email: Enter your password: Account logged in',
-            '---Your balance: $415.03---',
-            'buy',
-            'sell',
-            'update',
-            'logout',
             'Command invalid',
-            '---Your balance: $415.03---',
-            'buy',
-            'sell',
-            'update',
-            'logout',
-            'Logout successful',
             "login",
             "register",
             "exit",
@@ -48,11 +31,9 @@ def test_r3_1(capsys):
         expected_output_transactions=[]
     )
 
-#R3.2 was tested in the landing tests in R1.3 where we tested if landing could send to every session
-
-#tests all of R3.3 by checking if login asks for email and then entering the email and checking if it asks for
-#the password then logging out and exiting the program 
-def test_r3_3(capsys):
+#Tests R7.2 by logging in then checking if the logout command works and logs the user out, and then
+#displays the correct landing page after the user logs out
+def test_r7_2(capsys):
     helper(
         capsys=capsys,
         terminal_input=[
@@ -84,85 +65,6 @@ def test_r3_3(capsys):
         test_transactions=False,
         expected_output_transactions=[]
     )
-
-#Tests R3.4 which tests if the password or email is invalid and says that and doesnt allow them to login
-#First a valid email is entered then an invalid password and it checks the output, then an invalid
-#email is entered and it checks for this then exits the program
-def test_r3_4(capsys):
-    helper(
-        capsys=capsys,
-        terminal_input=[
-            "login",
-            'aaa@gmail.com',
-            'ddd1#',
-            'login',
-            '13#!@#$@gmail.com',
-            'exit'
-        ],
-        input_valid_accounts=['aaa@gmail.com,aaa,aaa45,415.03'],
-        input_valid_tickets=[],
-        expected_tail_of_terminal_output=[
-            "login",
-            "register",
-            "exit",
-            '---LOG IN---',
-            'Enter your email: Enter your password: Login failed',
-            "login",
-            "register",
-            "exit",
-            '---LOG IN---',
-            'Enter your email: Login failed',
-            "login",
-            "register",
-            "exit",
-            'Exiting program'
-        ],
-        test_transactions=False,
-        expected_output_transactions=[]
-    )
-
-#R3.4 format checking of the email and password is done in the registration and doesnt allow incorrect 
-#formatting to be registered. Felt redundant and unnecesary to make the login function check this and just made the login 
-#function check if the email and password are in "accounts.csv".
-
-#Tests R3.6 by logging in and checking if the landing page is correct for when logged in then
-#it logsout and exits the program
-def test_r3_6(capsys):
-    helper(
-        capsys=capsys,
-        terminal_input=[
-            "login",
-            'aaa@gmail.com',
-            'aaa45',
-            'logout',
-            'exit'
-        ],
-        input_valid_accounts=['aaa@gmail.com,aaa,aaa45,415.03'],
-        input_valid_tickets=[],
-        expected_tail_of_terminal_output=[
-            "login",
-            "register",
-            "exit",
-            '---LOG IN---',
-            'Enter your email: Enter your password: Account logged in',
-            '---Your balance: $415.03---',
-            'buy',
-            'sell',
-            'update',
-            'logout',
-            'Logout successful',
-            "login",
-            "register",
-            "exit",
-            'Exiting program'
-        ],
-        test_transactions=False,
-        expected_output_transactions=[]
-    )
-
-#R3.7 tests if the login fails but this is already achieved in the test R3.4 where invalid emails and
-#passwords are entered which fails the login because the email and password are not in the "accounts.csv"
-#file making this test case unnecessary so I chose to skip like Professor Ding said could be done.
 
 def helper(
         capsys,

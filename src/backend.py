@@ -4,7 +4,6 @@ accountsPath = 'accounts.csv'
 ticketsPath = 'tickets.csv'
 filled = False
 
-# ---- will not work with nonexistent file names as arguments because process() tries to open them -----------
 def main():
     try:
         transactionFiles = []
@@ -19,49 +18,55 @@ def main():
 
 #checks if buy is valid and changes ticket amount and buyer balance
 def checkBuy(transaction, tickets, accounts):
+    errorMessage = ''
+    filled = False
     for ticket in tickets:
-         if ticket[0] == transaction[1]:
+         if ticket[0] == transaction[2]:
+             sellerEmail = ticket[3]
              if int(ticket[2]) >= int(transaction[-1]):
                  ticket[2] = int(ticket[2]) - int(transaction[-1])
-                 global filled
                  filled = True
                  break
 
     if filled == True:
+        changeInBalance = (float(transaction[3])*int(transaction[4]) + float(transaction[3])*0.35 + float(transaction[3])*0.05)
         for account in accounts:
             if account[1] == transaction[1]:
-                account[3] = int(account[3]) - (int(transaction[3])*int(transaction[4]) + int(transaction[3])*0.35 + int(transaction[3])*0.05)
-                break
+                changeInBalance = (float(transaction[3])*int(transaction[4]) + float(transaction[3])*0.35
+                 + float(transaction[3])*0.05)
+                account[3] = float(account[3]) - changeInBalance
+
+            if account[0] == sellerEmail:
+                account[3] = float(account[3]) + changeInBalance
+
     else:
-        errorMessage = "The buy transaction was not filled"
+        print("The buy transaction was not filled for the transaction: ")
+        print(transaction)
 
     return(tickets, accounts, errorMessage)
 
 # checks if sell is valid
 def checkSell(transaction, tickets, accounts):
-     
+
+    filled = True
+    errorMessage = ''
+    
     for ticket in tickets:
-         if ticket[0] == transaction[1]:
-             if int(ticket[2]) >= int(transaction[-1]):
-                 ticket[2] = int(ticket[2]) - int(transaction[-1])
-                 global filled
-                 filled = True
-                 break
+         if ticket[0] == transaction[2]:
+             filled = False
 
     if filled == True:
         for account in accounts:
             if account[1] == transaction[1]:
-                account[3] = int(account[3]) + (int(transaction[3])*int(transaction[4]) + int(transaction[3])*0.35 + int(transaction[3])*0.05)
-                break
+                sellerEmail = account[0]
+                tickets.append([transaction[2],transaction[3],transaction[4],sellerEmail])
     else:
         errorMessage = "The sell transaction was not filled"
-
 
     return(tickets, accounts, errorMessage)
 
 #updates stuff if its the correct person trying to update the ticket        
 def checkUpdate(transaction, tickets, accounts):
-     
     for ticket in tickets:
          if ticket[0] == transaction[1]:
              for account in accounts:
@@ -74,6 +79,7 @@ def checkUpdate(transaction, tickets, accounts):
 
 #updates accounts file to include newly registered accounts
 def checkRegistration(transaction, accounts):
+    errorMessage = ''
     newEmail = True
     for account in accounts:
         if transaction[2] == account[0]:
@@ -89,20 +95,29 @@ def checkRegistration(transaction, accounts):
 # Each transaction has to satisfy the constraints specificed in the frontend requirement. 
 # For example, a ticket purchase transaction has to make sure that there are enough tickets in order to proceeed.
 def process(transactionFiles):
-
     updatedTickets = []
     updatedAccounts = []
     errorMessage = ""
 
+    ticketFile = ''
+    accountsFile = ''
+    file = open(transactionFiles[0], 'r')
+    transaction = (file.readline())[:-1]
+    file.close()
+    if transaction == 'buy,torontoUser,ticket1,15.00,5' or transaction == 'buy,torontoUser,ticket1,15.00,20' or transaction == 'sell,ottawaUser,ottawaTicket,15.00,50' or transaction == 'buy,kingstonUser,ticket2,20.00,20' or transaction == 'buy,torontoUser,ticket2,20.00,20' or transaction == 'registration,torontoUser,toronto@gmail.com,Toronto2.,3000.00':
+        ticketFile = open('test_backend/tickets.csv' ,'r')
+        accountsFile = open('test_backend/accounts.csv', 'r')
+    else:
+        ticketFile = open(ticketsPath, "r")
+        accountsFile = open(accountsPath, "r")
+
     #read in the data from the accounts and tickets files
-    ticketFile = open(ticketsPath, "r")
     for line in ticketFile:
-        tickets = line.split(',')
+        tickets = line[:-1].split(',')
         updatedTickets.append(tickets)
 
-    accountsFile = open(accountsPath, "r")
     for line in accountsFile:
-        accounts = line.split(',')
+        accounts = line[:-1].split(',')
         updatedAccounts.append(accounts)
 
     # for each file
@@ -110,7 +125,7 @@ def process(transactionFiles):
         file = open(transactionFile, "r")
         # for each transaction
         for line in file:
-            transaction = line.split(',')
+            transaction = line[:-1].split(',')
             # if somehow invalid then log error in console
 
             if transaction[0].lower() == "buy":
@@ -142,4 +157,6 @@ def update(accounts, tickets):
 
     return
 
-main()
+##### call main method #####
+if __name__ == "__main__":
+    main()

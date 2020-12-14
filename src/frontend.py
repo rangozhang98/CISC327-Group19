@@ -37,7 +37,7 @@ def main():
 
 # method controls the landing page
 def landing():
-    #sleep(1.5)
+    # sleep(1.5)
     clear()
     if loggedIn:
         global userInfo
@@ -169,10 +169,10 @@ def register():
     
     balance = 3000
 
-    # add account to file
-    accounts = open(accountsPath, "a")
-    accounts.write("%s,%s,%s,%.2f\n" % (email, username, password, balance))
-    accounts.close()
+    # # add account to file
+    # accounts = open(accountsPath, "a")
+    # accounts.write("%s,%s,%s,%.2f\n" % (email, username, password, balance))
+    # accounts.close()
     # add transaction to running total
     global runningTransactions
     runningTransactions += "registration,%s,%s,%s,%.2f\n" % (username, email, password, balance)
@@ -327,30 +327,30 @@ def buy():
             userInfo["balance"] -= ticketPrice * ticketQuantity * 1.40
             newfile = ""
             email = userInfo["email"]
-            # update user balance in the file
-            accounts = open(accountsPath, "r")
-            for line in accounts:
-                values = line[:-1].split(',')
-                if values[0] == email:
-                    newfile += "%s,%s,%s,%.2f\n" % (email, values[1], values[2], userInfo["balance"])
-                else:
-                    newfile += line
-            accounts = open(accountsPath, "w")
-            accounts.write(newfile)
-            accounts.close()
+            # # update user balance in the file
+            # accounts = open(accountsPath, "r")
+            # for line in accounts:
+            #     values = line[:-1].split(',')
+            #     if values[0] == email:
+            #         newfile += "%s,%s,%s,%.2f\n" % (email, values[1], values[2], userInfo["balance"])
+            #     else:
+            #         newfile += line
+            # accounts = open(accountsPath, "w")
+            # accounts.write(newfile)
+            # accounts.close()
 
-            # update ticket quantity in the file
-            newfile = ""
-            tickets = open(ticketsPath, "r")
-            for line in tickets:
-                values = line[:-1].split(',')
-                if values[0] == ticketName:
-                    newfile += "%s,%.2f,%d,%s\n" % (ticketName, ticketPrice, availableQuantity - ticketQuantity, values[3])
-                else:
-                    newfile += line
-            tickets = open(ticketsPath, "w")
-            tickets.write(newfile)
-            tickets.close()
+            # # update ticket quantity in the file
+            # newfile = ""
+            # tickets = open(ticketsPath, "r")
+            # for line in tickets:
+            #     values = line[:-1].split(',')
+            #     if values[0] == ticketName:
+            #         newfile += "%s,%.2f,%d,%s\n" % (ticketName, ticketPrice, availableQuantity - ticketQuantity, values[3])
+            #     else:
+            #         newfile += line
+            # tickets = open(ticketsPath, "w")
+            # tickets.write(newfile)
+            # tickets.close()
             
             # append a buy transaction
             global runningTransactions
@@ -418,18 +418,18 @@ def update():
             landing()
             return
         
-        # change ticket info in file
-        newfile = ""
-        tickets = open(ticketsPath, "r")
-        for line in tickets:
-            values = line[:-1].split(',')
-            if values[0] == ticketName:
-                newfile += "%s,%.2f,%d,%s\n" % (ticketName, ticketPrice, ticketQuantity, values[3])
-            else:
-                newfile += line
-        tickets = open(ticketsPath, "w")
-        tickets.write(newfile)
-        tickets.close()
+        # # change ticket info in file
+        # newfile = ""
+        # tickets = open(ticketsPath, "r")
+        # for line in tickets:
+        #     values = line[:-1].split(',')
+        #     if values[0] == ticketName:
+        #         newfile += "%s,%.2f,%d,%s\n" % (ticketName, ticketPrice, ticketQuantity, values[3])
+        #     else:
+        #         newfile += line
+        # tickets = open(ticketsPath, "w")
+        # tickets.write(newfile)
+        # tickets.close()
 
         # append an update transaction
         global runningTransactions
@@ -462,11 +462,11 @@ def exit():
         clear()
         # append all performed transactions to office location's file
         global runningTransactions
-        transactions = open(location + "_transactions.csv", "a")
+        transactions = open(location + "_transactions.csv", "w")
         transactions.write(runningTransactions)
         transactions.close()
         print("Exiting program")
-        #sleep(1.5)
+        # sleep(1.5)
         clear()
     else:
         print("Command invalid")
