@@ -15,11 +15,26 @@ def test_buy(capsys):
         a_transactions=['buy,torontoUser,ticket1,15.00,5'],
         b_transactions=['buy,torontoUser,ticket2,20.00,20'],
         expected_tail_of_terminal_output=[],
-        expected_output_updatedAccounts=['aaa@gmail.com,aaa,aaa45,415.03', 'www@gmail.com,zzzzz,Zz.45,3000.00', 
-        'zzz@gmail.com,zzzzz,Zz.45,3000.00', 'ddd@gmail.com,aaa,aaa45,15.03', 
-        'ottawa@gmail.com,ottawaUser,Ottawa3.,3000.00', 
-        'toronto@gmail.com,torontoUser,Toronto2.,3000.00'],
-        expected_output_updatedTickets=['ticket1,15.00,30,aaa@gmail.com', 'ticket2,20.00,50,bbb@gmail.com']
+        expected_output_updatedAccounts=['aaa@gmail.com,aaa,aaa45,496.03', 'www@gmail.com,zzzzz,Zz.45,3000.00', 
+        'zzz@gmail.com,zzzzz,Zz.45,3000.00', 'ddd@gmail.com,aaa,aaa45,15.03', 'ottawa@gmail.com,ottawaUser,Ottawa3.,3000.00', 
+        'toronto@gmail.com,torontoUser,Toronto2.,2511.0'],
+        expected_output_updatedTickets=['ticket1,15.00,25,aaa@gmail.com', 'ticket2,20.00,30,bbb@gmail.com',
+         'ottawaTicket,15.00,50,ottawa@gmail.com', 'torontoTicket,20.00,20,toronto@gmail.com']
+    )
+
+def test_buyFail(capsys):
+    helper(
+        capsys=capsys,
+        terminal_input=[],
+        a_transactions=['buy,torontoUser,ticket1,15.00,5'],
+        b_transactions=['buy,kingstonUser,ticket2,20.00,20', 'buy,kingstonUser,ticket1,15.00,50'],
+        expected_tail_of_terminal_output=["The buy transaction was not filled for the transaction: ",
+        "['buy', 'kingstonUser', 'ticket1', '15.00', '50']"],
+        expected_output_updatedAccounts=['aaa@gmail.com,aaa,aaa45,496.03', 'www@gmail.com,zzzzz,Zz.45,3000.00',
+         'zzz@gmail.com,zzzzz,Zz.45,3000.00', 'ddd@gmail.com,aaa,aaa45,15.03', 
+         'ottawa@gmail.com,ottawaUser,Ottawa3.,3000.00', 'toronto@gmail.com,torontoUser,Toronto2.,2919.0'],
+        expected_output_updatedTickets=['ticket1,15.00,25,aaa@gmail.com', 'ticket2,20.00,30,bbb@gmail.com',
+         'ottawaTicket,15.00,50,ottawa@gmail.com', 'torontoTicket,20.00,20,toronto@gmail.com']
     )
 
 def test_sell(capsys):
@@ -29,11 +44,11 @@ def test_sell(capsys):
         a_transactions=['sell,ottawaUser,ottawaTicket,15.00,50'],
         b_transactions=['buy,torontoUser,ticket1,15.00,20'],
         expected_tail_of_terminal_output=[],
-        expected_output_updatedAccounts=['aaa@gmail.com,aaa,aaa45,415.03', 'www@gmail.com,zzzzz,Zz.45,3000.00', 
+        expected_output_updatedAccounts=['aaa@gmail.com,aaa,aaa45,721.03', 'www@gmail.com,zzzzz,Zz.45,3000.00', 
         'zzz@gmail.com,zzzzz,Zz.45,3000.00', 'ddd@gmail.com,aaa,aaa45,15.03', 
-        'ottawa@gmail.com,ottawaUser,Ottawa3.,3000.00', 
-        'toronto@gmail.com,torontoUser,Toronto2.,3000.00'],
-        expected_output_updatedTickets=['ticket1,15.00,30,aaa@gmail.com', 'ticket2,20.00,50,bbb@gmail.com']
+        'ottawa@gmail.com,ottawaUser,Ottawa3.,3000.00', 'toronto@gmail.com,torontoUser,Toronto2.,2694.0'],
+        expected_output_updatedTickets=['ticket1,15.00,10,aaa@gmail.com', 'ticket2,20.00,50,bbb@gmail.com', 
+        'ottawaTicket,15.00,50,ottawa@gmail.com', 'torontoTicket,20.00,20,toronto@gmail.com']
     )
 
 def test_registration(capsys):
@@ -43,11 +58,11 @@ def test_registration(capsys):
         a_transactions=['registration,torontoUser,toronto@gmail.com,Toronto2.,3000.00'],
         b_transactions=['buy,torontoUser,ticket1,15.00,20'],
         expected_tail_of_terminal_output=[],
-        expected_output_updatedAccounts=['aaa@gmail.com,aaa,aaa45,415.03', 'www@gmail.com,zzzzz,Zz.45,3000.00', 
+        expected_output_updatedAccounts=['aaa@gmail.com,aaa,aaa45,721.03', 'www@gmail.com,zzzzz,Zz.45,3000.00', 
         'zzz@gmail.com,zzzzz,Zz.45,3000.00', 'ddd@gmail.com,aaa,aaa45,15.03', 
-        'ottawa@gmail.com,ottawaUser,Ottawa3.,3000.00', 
-        'toronto@gmail.com,torontoUser,Toronto2.,3000.00'],
-        expected_output_updatedTickets=['ticket1,15.00,30,aaa@gmail.com', 'ticket2,20.00,50,bbb@gmail.com']
+        'ottawa@gmail.com,ottawaUser,Ottawa3.,3000.00', 'toronto@gmail.com,torontoUser,Toronto2.,2694.0'],
+        expected_output_updatedTickets=['ticket1,15.00,10,aaa@gmail.com', 'ticket2,20.00,50,bbb@gmail.com',
+         'ottawaTicket,15.00,50,ottawa@gmail.com', 'torontoTicket,20.00,20,toronto@gmail.com']
     )
 
 def helper(
@@ -103,13 +118,17 @@ def helper(
     # the following print content will only display if a 
     # test case failed:
 
+    print('terminal output:', out_lines)
+    print('terminal output (expected tail):', expected_tail_of_terminal_output)
+    # outputFormat(terminal_input, input_valid_accounts, input_valid_tickets, out_lines, expected_tail_of_terminal_output)
+
     # compare terminal outputs at the end.`
     for i in range(1, len(expected_tail_of_terminal_output)+1):
         index = i * -1
         assert expected_tail_of_terminal_output[index] == out_lines[index]
     
     # compare accounts:
-    with open('src_backend/updated_accounts.csv', 'r') as of:
+    with open('updated_accounts.csv', 'r') as of:
         content = of.read().splitlines()
         
         # print out the testing information for debugging
@@ -124,7 +143,7 @@ def helper(
             assert content[ind] == expected_output_updatedAccounts[ind]
 
     # compare transactions:
-    with open('src_backend/updated_tickets.csv', 'r') as of:
+    with open('updated_tickets.csv', 'r') as of:
         content = of.read().splitlines()
         
         # print out the testing information for debugging

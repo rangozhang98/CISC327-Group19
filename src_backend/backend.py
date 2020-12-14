@@ -1,20 +1,20 @@
 import sys
 import csv
-accountsPath = 'accounts.csv'
-ticketsPath = 'tickets.csv'
+accountsPath = 'src_backend/accounts.csv'
+ticketsPath = 'src_backend/tickets.csv'
 filled = False
 
 def main():
-    try:
+    #try:
         transactionFiles = []
         for i in range(1, len(sys.argv)):
             transactionFiles.append(sys.argv[i])
         transactionFiles.sort()
         # array ready to process
         process(transactionFiles)
-    except:
+    #except:
         # instruct user how to run the program if arguments are wrong
-        print("Program needs arguments: {transaction_file_1.csv}, {transaction_file_2.csv}, etc...")
+     #   print("Program needs arguments: {transaction_file_1.csv}, {transaction_file_2.csv}, etc...")
 
 #checks if buy is valid and changes ticket amount and buyer balance
 def checkBuy(transaction, tickets, accounts):
