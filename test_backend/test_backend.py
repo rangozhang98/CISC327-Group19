@@ -3,7 +3,7 @@ from importlib import reload
 import os
 import io
 import sys
-import src_backend.backend as app
+import src.backend as app
 
 path = os.path.dirname(os.path.abspath(__file__))
 
@@ -15,11 +15,8 @@ def test_buy(capsys):
         a_transactions=['buy,torontoUser,ticket1,15.00,5'],
         b_transactions=['buy,torontoUser,ticket2,20.00,20'],
         expected_tail_of_terminal_output=[],
-        expected_output_updatedAccounts=['aaa@gmail.com,aaa,aaa45,496.03', 'www@gmail.com,zzzzz,Zz.45,3000.00', 
-        'zzz@gmail.com,zzzzz,Zz.45,3000.00', 'ddd@gmail.com,aaa,aaa45,15.03', 'ottawa@gmail.com,ottawaUser,Ottawa3.,3000.00', 
-        'toronto@gmail.com,torontoUser,Toronto2.,2511.0'],
-        expected_output_updatedTickets=['ticket1,15.00,25,aaa@gmail.com', 'ticket2,20.00,30,bbb@gmail.com',
-         'ottawaTicket,15.00,50,ottawa@gmail.com', 'torontoTicket,20.00,20,toronto@gmail.com']
+        expected_output_updatedAccounts=['aaa@gmail.com,aaa,aaa45,496.03', 'www@gmail.com,zzzzz,Zz.45,3000.00', 'zzz@gmail.com,zzzzz,Zz.45,3000.00', 'ddd@gmail.com,aaa,aaa45,15.03', 'ottawa@gmail.com,ottawaUser,Ottawa3.,3000.00', 'toronto@gmail.com,torontoUser,Toronto2.,2511.0'],
+        expected_output_updatedTickets=['ticket1,15.00,25,aaa@gmail.com', 'ticket2,20.00,30,bbb@gmail.com']
     )
 
 def test_buyFail(capsys):
@@ -28,13 +25,9 @@ def test_buyFail(capsys):
         terminal_input=[],
         a_transactions=['buy,torontoUser,ticket1,15.00,5'],
         b_transactions=['buy,kingstonUser,ticket2,20.00,20', 'buy,kingstonUser,ticket1,15.00,50'],
-        expected_tail_of_terminal_output=["The buy transaction was not filled for the transaction: ",
-        "['buy', 'kingstonUser', 'ticket1', '15.00', '50']"],
-        expected_output_updatedAccounts=['aaa@gmail.com,aaa,aaa45,496.03', 'www@gmail.com,zzzzz,Zz.45,3000.00',
-         'zzz@gmail.com,zzzzz,Zz.45,3000.00', 'ddd@gmail.com,aaa,aaa45,15.03', 
-         'ottawa@gmail.com,ottawaUser,Ottawa3.,3000.00', 'toronto@gmail.com,torontoUser,Toronto2.,2919.0'],
-        expected_output_updatedTickets=['ticket1,15.00,25,aaa@gmail.com', 'ticket2,20.00,30,bbb@gmail.com',
-         'ottawaTicket,15.00,50,ottawa@gmail.com', 'torontoTicket,20.00,20,toronto@gmail.com']
+        expected_tail_of_terminal_output=['The buy transaction was not filled for the transaction: ', "['buy', 'kingstonUser', 'ticket1', '15.00', '50']"],
+        expected_output_updatedAccounts=['aaa@gmail.com,aaa,aaa45,496.03', 'www@gmail.com,zzzzz,Zz.45,3000.00', 'zzz@gmail.com,zzzzz,Zz.45,3000.00', 'ddd@gmail.com,aaa,aaa45,15.03', 'ottawa@gmail.com,ottawaUser,Ottawa3.,3000.00', 'toronto@gmail.com,torontoUser,Toronto2.,2919.0'],
+        expected_output_updatedTickets=['ticket1,15.00,25,aaa@gmail.com', 'ticket2,20.00,30,bbb@gmail.com']
     )
 
 def test_sell(capsys):
@@ -44,11 +37,8 @@ def test_sell(capsys):
         a_transactions=['sell,ottawaUser,ottawaTicket,15.00,50'],
         b_transactions=['buy,torontoUser,ticket1,15.00,20'],
         expected_tail_of_terminal_output=[],
-        expected_output_updatedAccounts=['aaa@gmail.com,aaa,aaa45,721.03', 'www@gmail.com,zzzzz,Zz.45,3000.00', 
-        'zzz@gmail.com,zzzzz,Zz.45,3000.00', 'ddd@gmail.com,aaa,aaa45,15.03', 
-        'ottawa@gmail.com,ottawaUser,Ottawa3.,3000.00', 'toronto@gmail.com,torontoUser,Toronto2.,2694.0'],
-        expected_output_updatedTickets=['ticket1,15.00,10,aaa@gmail.com', 'ticket2,20.00,50,bbb@gmail.com', 
-        'ottawaTicket,15.00,50,ottawa@gmail.com', 'torontoTicket,20.00,20,toronto@gmail.com']
+        expected_output_updatedAccounts=['aaa@gmail.com,aaa,aaa45,721.03', 'www@gmail.com,zzzzz,Zz.45,3000.00', 'zzz@gmail.com,zzzzz,Zz.45,3000.00', 'ddd@gmail.com,aaa,aaa45,15.03', 'ottawa@gmail.com,ottawaUser,Ottawa3.,3000.00', 'toronto@gmail.com,torontoUser,Toronto2.,2694.0'],
+        expected_output_updatedTickets=['ticket1,15.00,10,aaa@gmail.com', 'ticket2,20.00,50,bbb@gmail.com', 'ottawaTicket,15.00,50,ottawa@gmail.com']
     )
 
 def test_registration(capsys):
@@ -58,11 +48,8 @@ def test_registration(capsys):
         a_transactions=['registration,torontoUser,toronto@gmail.com,Toronto2.,3000.00'],
         b_transactions=['buy,torontoUser,ticket1,15.00,20'],
         expected_tail_of_terminal_output=[],
-        expected_output_updatedAccounts=['aaa@gmail.com,aaa,aaa45,721.03', 'www@gmail.com,zzzzz,Zz.45,3000.00', 
-        'zzz@gmail.com,zzzzz,Zz.45,3000.00', 'ddd@gmail.com,aaa,aaa45,15.03', 
-        'ottawa@gmail.com,ottawaUser,Ottawa3.,3000.00', 'toronto@gmail.com,torontoUser,Toronto2.,2694.0'],
-        expected_output_updatedTickets=['ticket1,15.00,10,aaa@gmail.com', 'ticket2,20.00,50,bbb@gmail.com',
-         'ottawaTicket,15.00,50,ottawa@gmail.com', 'torontoTicket,20.00,20,toronto@gmail.com']
+        expected_output_updatedAccounts=['aaa@gmail.com,aaa,aaa45,721.03', 'www@gmail.com,zzzzz,Zz.45,3000.00', 'zzz@gmail.com,zzzzz,Zz.45,3000.00', 'ddd@gmail.com,aaa,aaa45,15.03', 'ottawa@gmail.com,ottawaUser,Ottawa3.,3000.00', 'toronto@gmail.com,torontoUser,Toronto2.,2694.0'],
+        expected_output_updatedTickets=['ticket1,15.00,10,aaa@gmail.com', 'ticket2,20.00,50,bbb@gmail.com']
     )
 
 def helper(
@@ -159,3 +146,5 @@ def helper(
     os.close(temp_fd)
     os.remove(temp_file)
     # remove transaction file
+    os.remove('updated_accounts.csv')
+    os.remove('updated_tickets.csv')

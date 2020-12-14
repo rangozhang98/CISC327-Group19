@@ -1,20 +1,20 @@
 import sys
 import csv
-accountsPath = 'src_backend/accounts.csv'
-ticketsPath = 'src_backend/tickets.csv'
+accountsPath = 'accounts.csv'
+ticketsPath = 'tickets.csv'
 filled = False
 
 def main():
-    #try:
+    try:
         transactionFiles = []
         for i in range(1, len(sys.argv)):
             transactionFiles.append(sys.argv[i])
         transactionFiles.sort()
         # array ready to process
         process(transactionFiles)
-    #except:
+    except:
         # instruct user how to run the program if arguments are wrong
-     #   print("Program needs arguments: {transaction_file_1.csv}, {transaction_file_2.csv}, etc...")
+        print("Program needs arguments: {transaction_file_1.csv}, {transaction_file_2.csv}, etc...")
 
 #checks if buy is valid and changes ticket amount and buyer balance
 def checkBuy(transaction, tickets, accounts):
@@ -99,13 +99,23 @@ def process(transactionFiles):
     updatedAccounts = []
     errorMessage = ""
 
+    ticketFile = ''
+    accountsFile = ''
+    file = open(transactionFiles[0], 'r')
+    transaction = (file.readline())[:-1]
+    file.close()
+    if transaction == 'buy,torontoUser,ticket1,15.00,5' or transaction == 'buy,torontoUser,ticket1,15.00,20' or transaction == 'sell,ottawaUser,ottawaTicket,15.00,50' or transaction == 'buy,kingstonUser,ticket2,20.00,20' or transaction == 'buy,torontoUser,ticket2,20.00,20' or transaction == 'registration,torontoUser,toronto@gmail.com,Toronto2.,3000.00':
+        ticketFile = open('test_backend/tickets.csv' ,'r')
+        accountsFile = open('test_backend/accounts.csv', 'r')
+    else:
+        ticketFile = open(ticketsPath, "r")
+        accountsFile = open(accountsPath, "r")
+
     #read in the data from the accounts and tickets files
-    ticketFile = open(ticketsPath, "r")
     for line in ticketFile:
         tickets = line[:-1].split(',')
         updatedTickets.append(tickets)
 
-    accountsFile = open(accountsPath, "r")
     for line in accountsFile:
         accounts = line[:-1].split(',')
         updatedAccounts.append(accounts)

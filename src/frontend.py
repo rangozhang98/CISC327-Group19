@@ -462,7 +462,7 @@ def exit():
         clear()
         # append all performed transactions to office location's file
         global runningTransactions
-        transactions = open(location + "_transactions.csv", "a")
+        transactions = open(location + "_transactions.csv", "w")
         transactions.write(runningTransactions)
         transactions.close()
         print("Exiting program")
