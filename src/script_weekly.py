@@ -1,6 +1,9 @@
 import script_daily as daily
 
 def main():
+    # start week with empty accounts/tickets files
+    open("accounts.csv", 'w')
+    open("tickets.csv", 'w')
     for i in range(5):
         daily.main()
 
