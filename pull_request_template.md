@@ -12,9 +12,9 @@ Please include a summary of the change and which issue is fixed. Please also inc
 
 # Checklist:
 
-- [ ] My code follows the style guidelines of this project
-- [ ] I have performed a self-review of my own code
-- [ ] I have commented my code, particularly in hard-to-understand areas
-- [ ] I have made corresponding changes to the documentation
-- [ ] My changes generate no new warnings
-- [ ] New and existing unit tests pass locally with my changes
+- [x] My code follows the style guidelines of this project
+- [x] I have performed a self-review of my own code
+- [x] I have commented my code, particularly in hard-to-understand areas
+- [x] I have made corresponding changes to the documentation
+- [x] My changes generate no new warnings
+- [x] New and existing unit tests pass locally with my changes

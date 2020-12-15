@@ -1,11 +1,14 @@
-import daily_script as daily
+import script_daily as daily
 
 def main():
+    # start week with empty accounts/tickets files
+    open("accounts.csv", 'w')
+    open("tickets.csv", 'w')
     for i in range(5):
         daily.main()
 
         accounts = open("accounts.csv", 'r')
-        oldAccounts = open("accounts_day" + str(i+1) + ".csv", 'a')
+        oldAccounts = open("account_updates/accounts_day_" + str(i+1) + ".csv", 'a')
         
         for line in accounts:
             oldAccounts.write(line)
@@ -14,7 +17,7 @@ def main():
         oldAccounts.close()
 
         tickets = open("tickets.csv", 'r')
-        oldTickets = open("tickets_day" + str(i+1) + ".csv", 'a')
+        oldTickets = open("ticket_updates/tickets_day_" + str(i+1) + ".csv", 'a')
         
         for line in tickets:
             oldTickets.write(line)

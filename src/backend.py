@@ -14,7 +14,7 @@ def main():
         process(transactionFiles)
     except:
         # instruct user how to run the program if arguments are wrong
-        print("Program needs arguments: {transaction_file_1.csv}, {transaction_file_2.csv}, etc...")
+        print("Program needs arguments: {transactions/transaction_file_1.csv}, {transactions/transaction_file_2.csv}, etc...")
 
 #checks if buy is valid and changes ticket amount and buyer balance
 def checkBuy(transaction, tickets, accounts):
